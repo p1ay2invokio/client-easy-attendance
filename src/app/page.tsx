@@ -1,103 +1,158 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import dayjs from "dayjs"
+import 'dayjs/locale/th'
+import Header from "../../components/Header"
+import { AttendanceMethod } from "../../methods/methods"
+import Swal from "sweetalert2"
+import { useEffect, useState } from "react"
+import Bottom from "../../components/Bottom"
+
+const HomePage = () => {
+
+  let date = dayjs().locale('th').format('DD MMMM YYYY')
+
+  let [attendance, setAttendance] = useState<any | null>(null)
+  let [refresh, setRefresh] = useState<number>(0)
+  let [loading, setLoading] = useState<boolean>(true)
+
+  let [myLat, setMyLat] = useState<any>(null)
+  let [myLong, setMyLong] = useState<any>(null)
+
+  const initial = async () => {
+    let res = await new AttendanceMethod().todayData()
+
+    if (res.status) {
+      console.log(res.data)
+      setAttendance(res.data)
+    } else {
+      console.log("Fetching Data Error!")
+    }
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      console.log(pos.coords)
+      setMyLat(pos.coords.latitude)
+      setMyLong(pos.coords.longitude)
+    }, (err) => {
+      if (err.code === err.PERMISSION_DENIED) {
+        Swal.fire("ไม่ได้เปิด Location", '', 'warning')
+      } else if (err.code === err.POSITION_UNAVAILABLE) {
+        Swal.fire("Location ไม่ถูกให้ใช้")
+      } else if (err.code === err.TIMEOUT) {
+        Swal.fire("Location request timeout")
+      } else {
+        Swal.fire("Location occurred unknow error")
+      }
+    })
+  }
+
+  useEffect(() => {
+    initial()
+    setLoading(false)
+  }, [refresh])
+
+  if (loading) {
+    return null
+  }
+
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div>
+      <Header />
+      <div className="flex flex-col gap-0 justify-center items-center h-[calc(100vh-250px)]">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="w-[360px] p-2  rounded-xl border bg-white shadow-sm border-gray-200 flex flex-col justify-start items-center gap-5">
+
+          <div className="w-full flex justify-center overflow-hidden rounded-lg mb-2 shadow">
+            {/* <p>{attendance.in_timestamp ? dayjs.unix(Number(attendance.in_timestamp)).format("HH:mm:ss") : null}</p>
+              <p>{attendance.out_timestamp ? dayjs.unix(Number(attendance.out_timestamp)).format("HH:mm:ss") : null}</p> */}
+            <table className="w-full text-center ">
+              <thead className="bg-red-400">
+                <tr className="font-[regular] text-[20px] text-white">
+                  <td className="h-[40px]">เวลาเข้างาน</td>
+                  <td>เวลาออกงาน</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white font-[light] text-[18px] text-gray-600">
+                  {attendance ?
+                    <>
+                      <td className="h-[50px]">{attendance.in_timestamp ? dayjs.unix(Number(attendance.in_timestamp)).format("HH:mm:ss") : null}</td>
+                      <td>{attendance.out_timestamp ? dayjs.unix(Number(attendance.out_timestamp)).format("HH:mm:ss") : null}</td>
+                    </> : <td colSpan={2} className="h-[50px]">ไม่พบบันทึกเวลางานในวันนี้</td>}
+                  {/* {!attendance ? <td>ไม่พบบันทึกเวลางานในวันนี้</td> : null} */}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex flex-col gap-0 items-center w-full">
+            <p className="font-[bold] text-[20px] text-gray-700">{date}</p>
+          </div>
+
+          {attendance ? !attendance.in_timestamp ? <button className="w-[40%] h-[48px] bg-red-400/20 border-red-300 text-red-500 border rounded-lg font-[regular] text-[20px] cursor-pointer hover:bg-red-400/30 duration-100" onClick={async () => {
+            if (myLat && myLong) {
+              let response: any = await new AttendanceMethod().attend(myLat, myLong)
+
+              if (!response.status) {
+                Swal.fire(response.message, "", 'error')
+              } else {
+                Swal.fire(response.message, "", 'success')
+              }
+
+              setRefresh(refresh + 1)
+
+            } else {
+              Swal.fire("Location ยังไม่ถูกเปิด", "", "warning")
+            }
+
+          }}>เข้างาน</button> : !attendance.out_timestamp ? <button className="w-[90%] h-[48px] bg-red-400/20 border-red-300 text-red-500 border rounded-lg font-[regular] text-[20px] cursor-pointer hover:bg-red-400/30 duration-100" onClick={async () => {
+
+            Swal.fire({
+              title: "คุณต้องการออกจากงาน?",
+              icon: "question",
+              showConfirmButton: true,
+              showCancelButton: true,
+              confirmButtonText: "ใช่",
+              cancelButtonText: "ไม่"
+            }).then(async (res) => {
+              if (res.isConfirmed) {
+                let response: any = await new AttendanceMethod().out()
+
+                if (!response.status) {
+                  Swal.fire(response.message, "", 'error')
+                } else {
+                  Swal.fire(response.message, "", 'success')
+                }
+
+                setRefresh(refresh + 1)
+              }
+            })
+
+
+          }}>ออกงาน</button> : <p className="font-[light] text-green-600 text-[20px]">คุณได้ลงเวลาเข้าออกงานเรียบร้อยแล้ว !</p> : <button className="w-[90%] h-[48px] bg-blue-400/20 border-blue-300 text-blue-500 border rounded-lg font-[medium] text-[20px] cursor-pointer hover:bg-blue-400/30 duration-100" onClick={async () => {
+            if (myLat && myLong) {
+              let response: any = await new AttendanceMethod().attend(myLat, myLong)
+
+              if (!response.status) {
+                Swal.fire(response.message, "", 'error')
+              } else {
+                Swal.fire(response.message, "", 'success')
+              }
+
+              setRefresh(refresh + 1)
+
+            } else {
+              Swal.fire("Location ยังไม่ถูกเปิด", "", "warning")
+            }
+
+          }}>เข้างาน</button>}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      <Bottom />
     </div>
-  );
+  )
 }
+
+export default HomePage

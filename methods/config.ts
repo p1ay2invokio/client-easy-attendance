@@ -1,0 +1,1 @@
+export const uri = `https://run.playapi.shop`
