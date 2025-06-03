@@ -201,7 +201,9 @@ const HomePage = () => {
                   Swal.fire(response.message, "", 'success')
                 }
 
-                window.location.reload()
+                setTimeout(()=>{
+                  window.location.reload()
+                }, 1000)
                 // setRefresh(refresh + 1)
               }
             })
