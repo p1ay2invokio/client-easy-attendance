@@ -24,7 +24,7 @@ export class AttendanceMethod {
         })
     }
 
-    public out = () => {
+    public out = (my_lat:number, my_long:number) => {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
@@ -34,7 +34,9 @@ export class AttendanceMethod {
             }
 
             axios.post(`${uri}/api/out`, {
-                id: Number(userId)
+                id: Number(userId),
+                my_lat: my_lat,
+                my_long: my_long
             }).then((res) => {
                 resolve(res.data)
             }).catch((err) => {
