@@ -40,8 +40,8 @@ const HomePage = () => {
   let [myLat, setMyLat] = useState<any>(null)
   let [myLong, setMyLong] = useState<any>(null)
 
-  var count_up:any
-  
+  var count_up: any
+
   let [currentTime, setCurrentTime] = useState({
     hr: '00',
     min: '00',
@@ -57,9 +57,9 @@ const HomePage = () => {
       setTimeout(() => {
         setLoadTime(false)
       }, 1000)
-      if(res.data.in_timestamp && res.data.out_timestamp){
+      if (res.data.in_timestamp && res.data.out_timestamp) {
         clearInterval(count_up)
-      }else{
+      } else {
         count_up = setInterval(() => {
           let stringTime = getElapsedTime(res.data?.in_timestamp)
           console.log(stringTime.split(" seconds")[0].split("minutes ")[1])
@@ -196,15 +196,18 @@ const HomePage = () => {
                 let response: any = await new AttendanceMethod().out(myLat, myLong)
 
                 if (!response.status) {
-                  Swal.fire(response.message, "", 'error')
+                  Swal.fire({
+                    title: response.message,
+                    icon: 'error'
+                  }).then((res) => {
+                    if (res.isConfirmed) {
+                      window.location.reload()
+                    }
+                  })
                 } else {
                   Swal.fire(response.message, "", 'success')
                 }
-
-                setTimeout(()=>{
-                  window.location.reload()
-                }, 1000)
-                // setRefresh(refresh + 1)
+                setRefresh(refresh + 1)
               }
             })
 
