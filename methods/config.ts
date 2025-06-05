@@ -1,3 +1,3 @@
-export const uri = `http://192.168.1.8:3001`
+export const uri = `https://attend.playapi.shop`
 // `https://attend.playapi.shop`
 // `http://localhost:3001`
