@@ -10,8 +10,8 @@ import relativeTime from "dayjs/plugin/relativeTime"
 dayjs.extend(relativeTime)
 // dayjs.locale('th')
 
-const SalaryCal=(in_timestamp: number, rate: number)=>{
-  let salary = Math.floor((dayjs().diff(dayjs.unix(in_timestamp), 'minutes') / 30)) * (rate / 12) / 2
+const SalaryCal=(in_timestamp: number, out_timestamp: number, rate: number)=>{
+  let salary = Math.floor((dayjs.unix(out_timestamp).diff(dayjs.unix(in_timestamp), 'minutes') / 30)) * (rate / 12) / 2
 
   return salary
 }
@@ -69,7 +69,7 @@ const History = () => {
                                     <td className="pt-2 pb-2">{item.work_timestamp}</td>
                                     <td>{dayjs.unix(item.in_timestamp).format('HH:mm:ss')}</td>
                                     <td>{dayjs.unix(item.out_timestamp).format('HH:mm:ss')}</td>
-                                    <td className="text-green-700 font-[medium]">{SalaryCal(item.in_timestamp, item.employee.rate)}฿</td>
+                                    <td className="text-green-700 font-[medium]">{SalaryCal(item.in_timestamp, item.out_timestamp ,item.employee.rate)}฿</td>
                                 </tr>
                             )
                         }) : <tr><td className="font-[light] h-20" colSpan={4}>ยังไม่มีการเข้างาน</td></tr>}
