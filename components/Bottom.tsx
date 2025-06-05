@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation"
-import { BiHome, BiLogOut, BiUser } from "react-icons/bi"
+import { BiAddToQueue, BiAlarm, BiHome, BiLogOut, BiNotification, BiUser } from "react-icons/bi"
 import { BsCalendarDate } from "react-icons/bs"
 import { FiHome } from "react-icons/fi"
 import Swal from "sweetalert2"
@@ -33,6 +33,17 @@ const Bottom = () => {
             </div>
 
             <div onClick={() => {
+                // navigate.push("/")
+                Swal.fire({
+                    title: "อยู่ในขั้นตอนการพัฒนา",
+                    icon: 'info'
+                })
+            }} className=" flex justify-center items-center flex-col gap-1">
+                <BiNotification size={25} />
+                <p className="font-[medium] text-[14px]">แจ้งเตือน</p>
+            </div>
+
+            {/* <div onClick={() => {
                 Swal.fire({
                     title: "คุณต้องการออกจากระบบ?",
                     icon: "question",
@@ -60,7 +71,7 @@ const Bottom = () => {
             }} className=" flex justify-center items-center flex-col gap-2">
                 <BiLogOut size={25} />
                 <p className="font-[medium] text-[14px]">ออกจากระบบ</p>
-            </div>
+            </div> */}
         </div>
     )
 }
