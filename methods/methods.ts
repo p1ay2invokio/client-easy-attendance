@@ -56,6 +56,10 @@ export class AttendanceMethod {
 
             axios.get(`${uri}/api/today_data/${userId}`).then((res) => {
                 resolve(res.data)
+            }).catch((err)=>{
+                resolve(err.response?.data)
+                // localStorage.removeItem('id')
+                // localStorage.removeItem('name')
             })
         })
     }

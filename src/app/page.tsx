@@ -57,8 +57,10 @@ const HomePage = () => {
 
   const initial = async () => {
     let res: any = await new AttendanceMethod().todayData()
+    
+    console.log(res)
 
-    if (res.status) {
+    if (res.status == 200) {
       console.log(res.data)
       setTimeout(() => {
         setLoadTime(false)
@@ -80,7 +82,12 @@ const HomePage = () => {
       setAttendance(res.data)
 
       // console.log((Math.floor((dayjs().diff(dayjs.unix(res.data.in_timestamp), 'minutes') / 30))) * 20)
+    }else if(res.status == 401){
+      localStorage.removeItem('id')
+      localStorage.removeItem('name')
+      window.location.href = '/login'
     } else {
+      // console.log(res)
       console.log("Fetching Data Error!")
     }
 

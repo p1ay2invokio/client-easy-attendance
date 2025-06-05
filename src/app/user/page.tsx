@@ -27,7 +27,7 @@ const User = () => {
         <div>
             <Header />
 
-            <div className="h-[calc(100vh-170px)] p-10 font-[light] text-[20px]">
+            <div className="h-[calc(100vh-170px)] p-10 font-[light] text-[18px]">
                 {userData ? <div className="flex flex-col gap-2 bg-white p-5 rounded-lg border-1 border-gray-300">
                     <div className="flex justify-between">
                         <p className="font-[medium]">ID</p>
