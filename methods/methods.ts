@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios"
 import { uri } from "./config"
 
 export class AttendanceMethod {
-    public attend = (my_lat: number, my_long: number) => {
+    public attend = (aid: number, my_lat: number, my_long: number) => {
         return new Promise((resolve, reject) => {
 
             let userId = localStorage.getItem("id")
@@ -13,6 +13,7 @@ export class AttendanceMethod {
 
             axios.post(`${uri}/api/attend`, {
                 id: userId,
+                aid: aid,
                 my_lat: my_lat,
                 my_long: my_long
             }).then((res) => {
@@ -24,7 +25,7 @@ export class AttendanceMethod {
         })
     }
 
-    public out = (my_lat:number, my_long:number) => {
+    public out = (my_lat: number, my_long: number) => {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
@@ -56,7 +57,7 @@ export class AttendanceMethod {
 
             axios.get(`${uri}/api/today_data/${userId}`).then((res) => {
                 resolve(res.data)
-            }).catch((err)=>{
+            }).catch((err) => {
                 resolve(err.response?.data)
                 // localStorage.removeItem('id')
                 // localStorage.removeItem('name')
@@ -106,6 +107,56 @@ export class EmployeeMethod {
             }
 
             axios.get(`${uri}/api/detail/${userId}`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+}
+
+export class AdminMethod {
+    public getEmployees = () => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`${uri}/api/employees`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public getDateUser = (id: number) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`${uri}/api/employee/date/${id}`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public revenueUpdate = (aid: number ,revenue_new:number) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.patch(`${uri}/api/employee/revenue`,{
+                aid: aid,
+                revenue_new: revenue_new
+            }).then((res) => {
                 resolve(res.data)
             })
         })

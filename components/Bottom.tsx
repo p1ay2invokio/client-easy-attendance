@@ -1,8 +1,10 @@
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { BiAddToQueue, BiAlarm, BiHome, BiLogOut, BiNotification, BiUser } from "react-icons/bi"
 import { BsCalendarDate } from "react-icons/bs"
 import { FiHome } from "react-icons/fi"
 import Swal from "sweetalert2"
+import { EmployeeMethod } from "../methods/methods"
 
 const Bottom = () => {
 

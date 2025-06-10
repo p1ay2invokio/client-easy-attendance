@@ -17,9 +17,14 @@ const Header = () => {
 
     return (
         <div className="w-full h-[80px] flex items-center bg-white justify-between p-[20px] shadow-sm">
-            <p onClick={()=>{
-                navigate.push('/')
-            }} className="font-[bold] text-[20px]">EasyAttendance</p>
+            <div>
+                <p onClick={() => {
+                    navigate.push('/')
+                }} className="font-[bold] text-[20px]">EasyAttendance</p>
+                <p onClick={() => {
+                    navigate.push('/')
+                }} className="font-[light] text-gray-500 text-[14px] mt-[-5px]">โปรแกรมตอกบัตร</p>
+            </div>
             <p onClick={(e) => {
                 // Swal.fire({
                 //     title: "คุณต้องการออกจากระบบ?",

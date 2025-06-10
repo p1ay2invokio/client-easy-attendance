@@ -10,10 +10,10 @@ import relativeTime from "dayjs/plugin/relativeTime"
 dayjs.extend(relativeTime)
 // dayjs.locale('th')
 
-const SalaryCal=(in_timestamp: number, out_timestamp: number, rate: number)=>{
-  let salary = Math.floor((dayjs.unix(out_timestamp).diff(dayjs.unix(in_timestamp), 'minutes') / 30)) * (rate / 12) / 2
+const SalaryCal = (in_timestamp: number, out_timestamp: number, rate: number) => {
+    let salary = Math.floor((dayjs.unix(out_timestamp).diff(dayjs.unix(in_timestamp), 'minutes') / 30)) * (rate / 12) / 2
 
-  return salary
+    return salary
 }
 
 const History = () => {
@@ -46,7 +46,7 @@ const History = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {histories && histories.length > 0 ? histories.map((item:any, index: number)=>{
+                        {histories && histories.length > 0 ? histories.map((item: any, index: number) => {
 
                             let start_time = item.in_timestamp
                             let end_time = item.out_timestamp
@@ -64,12 +64,12 @@ const History = () => {
 
 
 
-                            return(
+                            return (
                                 <tr className={`font-[regular] text-[14px] ${index % 2 != 0 ? 'bg-slate-200/50' : null}`} key={item.id}>
                                     <td className="pt-2 pb-2">{item.work_timestamp}</td>
-                                    <td>{dayjs.unix(item.in_timestamp).format('HH:mm:ss')}</td>
-                                    <td>{dayjs.unix(item.out_timestamp).format('HH:mm:ss')}</td>
-                                    <td className="text-green-700 font-[medium]">{SalaryCal(item.in_timestamp, item.out_timestamp ,item.employee.rate)}฿</td>
+                                    <td>{item.in_timestamp ? dayjs.unix(item.in_timestamp).format('HH:mm:ss') : null}</td>
+                                    <td>{item.out_timestamp ? dayjs.unix(item.out_timestamp).format('HH:mm:ss') : null}</td>
+                                    {item.revenue ? <td className="text-green-700 font-[medium]">{item.revenue}฿</td> : item.in_timestamp ? item.out_timestamp ? <td className="text-green-700 font-[medium]">0฿</td> : <td className="text-orange-500 font-[medium]">รอ</td> : <td className="text-red-500 font-[medium]">ยังไม่ได้เข้างาน</td>}
                                 </tr>
                             )
                         }) : <tr><td className="font-[light] h-20" colSpan={4}>ยังไม่มีการเข้างาน</td></tr>}
