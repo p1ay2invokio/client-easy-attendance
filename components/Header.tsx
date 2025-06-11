@@ -43,11 +43,11 @@ const Header = () => {
                 }} className="font-[bold] text-[20px]">EasyAttendance</p>
                 <p onClick={() => {
                     navigate.push('/')
-                }} className="font-[light] text-gray-500 text-[14px] mt-[-5px]">โปรแกรมตอกบัตร</p>
+                }} className="font-[light] text-gray-500 text-[15px] mt-[-5px]">โปรแกรมตอกบัตร</p>
             </div>
             <div className=" flex flex-col justify-end items-end">
                 <p className="font-[medium] text-[18px]">{name}</p>
-                <p className="font-[light] text-[14px]">{user && user.userData ? user.userData.department : null}</p>
+                <p className="font-[light] text-[15px]">{user && user.userData ? user.userData.department : null}</p>
             </div>
         </div>
     )

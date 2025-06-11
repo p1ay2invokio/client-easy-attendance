@@ -123,7 +123,7 @@ const Admin = () => {
             </div> : null}
 
 
-            <div className="p-5 flex gap-2 flex-col h-[100vh] overflow-scroll">
+            <div className="p-5 flex gap-2 flex-col h-[200vh] overflow-scroll">
                 {employees && employees.length > 0 ? employees.map((item: any) => {
                     return (
                         <div key={item.id} onClick={async (e) => {

@@ -153,10 +153,14 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col gap-0 justify-center items-center h-[calc(100vh-300px)]">
 
-        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3 h-25 mb-2 rounded-lg shadow p-1">
-          <img src={'/img/1.jpg'} className="w-full h-full rounded-l-lg"></img>
-          <img src={'/img/2.jpg'} className="w-full h-full"></img>
-          <img src={'/img/3.jpg'} className="w-full h-full rounded-r-lg"></img>
+        <div className="border-1 border-gray-300 w-[360px] h-10 mb-2 rounded-lg shadow p-0">
+          <img src={'/img/5.jpg'} className="w-full object-cotain h-full rounded-lg"></img>
+        </div>
+
+        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3 h-20 gap-2 mb-2 rounded-lg shadow p-1">
+          <img src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+          <img src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+          <img src={'/img/3.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
           {/* <img src={'/img/4.jpg'} className="w-full h-full rounded-r-lg col-span-4 mt-5"></img> */}
         </div>
 
@@ -263,7 +267,7 @@ const HomePage = () => {
 
       <Bottom />
 
-      <Toaster position="bottom-center"/>
+      <Toaster position="bottom-center" />
     </div>
   )
 }
