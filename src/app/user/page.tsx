@@ -5,6 +5,7 @@ import { EmployeeMethod } from "../../../methods/methods"
 import Header from "../../../components/Header"
 import Bottom from "../../../components/Bottom"
 import { useRouter } from "next/navigation"
+import { BiSolidDashboard } from "react-icons/bi"
 
 const User = () => {
 
@@ -72,10 +73,11 @@ const User = () => {
                     </div>
                 </div>
 
-                <div className="flex w-full justify-center">
+                <div className="flex w-full justify-start">
                     <button onClick={() => {
                         navigate.push('/admin')
-                    }} className="w-30 h-12 border-1 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600">
+                    }} className="w-30 h-12 border-1 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600 flex justify-center items-center gap-2">
+                        <BiSolidDashboard className="text-sky-600" size={30}/>
                         <p className="font-[medium]">Admin</p>
                     </button>
                 </div>

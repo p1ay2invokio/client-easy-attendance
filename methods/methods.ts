@@ -144,7 +144,7 @@ export class AdminMethod {
         })
     }
 
-    public revenueUpdate = (aid: number ,revenue_new:number) => {
+    public revenueUpdate = (aid: number, revenue_new: number) => {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
@@ -153,9 +153,26 @@ export class AdminMethod {
                 window.location.href = "/login"
             }
 
-            axios.patch(`${uri}/api/employee/revenue`,{
+            axios.patch(`${uri}/api/employee/revenue`, {
                 aid: aid,
                 revenue_new: revenue_new
+            }).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public paidSalary = (eid: number) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.patch(`${uri}/api/employee/paid/salary`, {
+                eid: eid,
             }).then((res) => {
                 resolve(res.data)
             })

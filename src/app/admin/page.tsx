@@ -71,7 +71,7 @@ const Admin = () => {
                     <p className="font-[medium] text-[20px]">พนักงาน : {dates && dates.name ? dates.name : null}</p>
                     {dates.dates && dates.dates.length > 0 ? dates.dates.map((item: any) => {
                         return (
-                            <div className={`bg-white p-3 border-1 border-gray-300 rounded-lg`}>
+                            <div key={item.id} className={`bg-white p-3 border-1 border-gray-300 rounded-lg`}>
                                 {item.revenue <= 0 ? <span className="relative flex size-3">
                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
                                     <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
@@ -123,37 +123,63 @@ const Admin = () => {
             </div> : null}
 
 
-            <div className="p-5 flex gap-2 flex-col">
+            <div className="p-5 flex gap-2 flex-col h-[100vh] overflow-scroll">
                 {employees && employees.length > 0 ? employees.map((item: any) => {
                     return (
-                        <div onClick={async () => {
+                        <div key={item.id} onClick={async (e) => {
 
-                            // setDate 
-                            let dates_res: any = await new AdminMethod().getDateUser(item.id)
+                            if (e.target == e.currentTarget) {
+                                // setDate 
+                                let dates_res: any = await new AdminMethod().getDateUser(item.id)
 
-                            console.log(dates_res)
-                            console.log(item)
+                                // console.log(dates_res)
+                                // console.log(item)
 
-                            let data = {
-                                name: item.name,
-                                dates: dates_res
+                                let data = {
+                                    name: item.name,
+                                    dates: dates_res
+                                }
+
+                                // console.log("Data : ", data)
+                                setDates(data)
+
+                                setModal(true)
                             }
-
-                            console.log("Data : ", data)
-                            setDates(data)
-
-                            setModal(true)
 
 
                         }} className="bg-white p-3 rounded-lg border-1 border-gray-300 flex justify-between items-center">
                             <div>
                                 <p className="font-[medium]">{item.name}</p>
+                                <p className="font-[regular] text-[14px] text-gray-500">{item.department}</p>
                                 <p className="font-[regular] text-[14px] text-gray-500">รายได้ {item.cash} บาท</p>
                             </div>
                             <div className="">
 
-                                <button className="p-2 bg-green-600/20 font-[medium] border-1 border-green-600 text-green-600 rounded-lg" onClick={() => {
+                                <button className="p-2 bg-green-600/20 font-[medium] border-1 border-green-600 text-green-600 rounded-lg" onClick={async (e) => {
+                                    if (e.target == e.currentTarget) {
+                                        Swal.fire({
+                                            title: `ต้องการจ่ายเงินเดือนให้พนักงาน ${item.name}`,
+                                            text: `${item.cash}฿`,
+                                            confirmButtonText: 'ใช่',
+                                            cancelButtonText: 'ไม่',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#0ea5e9',
+                                            cancelButtonColor: '#ef4444',
+                                            icon: 'info'
+                                        }).then(async(res) => {
+                                            if (res.isConfirmed) {
+                                                let res = await new AdminMethod().paidSalary(item.id)
 
+                                                Swal.fire({
+                                                    title: `จ่ายเงินเดือนให้ ${item.name} สำเร็จ!`,
+                                                    text: `${item.cash}฿`,
+                                                    icon: 'success'
+                                                })
+
+                                                setRefresh(refresh + 1)
+                                            }
+                                        })
+                                    }
                                 }}>จ่ายเงิน</button>
                             </div>
                         </div>

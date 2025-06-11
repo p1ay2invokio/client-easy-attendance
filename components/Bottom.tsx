@@ -37,12 +37,13 @@ const Bottom = () => {
             <div onClick={() => {
                 // navigate.push("/")
                 Swal.fire({
-                    title: "อยู่ในขั้นตอนการพัฒนา",
+                    title: "แจ้งปัญหา",
+                    text: 'LINE ID: pzonenet',
                     icon: 'info'
                 })
             }} className=" flex justify-center items-center flex-col gap-1">
                 <BiNotification size={25} />
-                <p className="font-[medium] text-[14px]">แจ้งเตือน</p>
+                <p className="font-[medium] text-[14px]">แจ้งปัญหา</p>
             </div>
 
             {/* <div onClick={() => {
