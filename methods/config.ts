@@ -1,5 +1,5 @@
 export const uri = `https://attend.playapi.shop`
-export const uri_maekhan = `http://192.168.1.14:3001`
+export const uri_maekhan = `http://192.168.1.7:3001`
 // export const uri = `http://localhost:3001`
 // export const uri = `http://192.168.1.4:3001`
 // `https://attend.playapi.shop`
