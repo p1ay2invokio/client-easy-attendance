@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios"
-import { uri } from "./config"
+import { uri, uri_maekhan } from "./config"
 
 export class AttendanceMethod {
     public attend = (aid: number, my_lat: number, my_long: number) => {
@@ -174,6 +174,24 @@ export class AdminMethod {
             axios.patch(`${uri}/api/employee/paid/salary`, {
                 eid: eid,
             }).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+}
+
+
+export class StockMethod {
+    public getProductWithBarcode = (barcode: String) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`/api/product/${barcode}`).then((res) => {
                 resolve(res.data)
             })
         })

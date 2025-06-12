@@ -160,7 +160,7 @@ const HomePage = () => {
         <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3 h-20 gap-2 mb-2 rounded-lg shadow p-1">
           <img src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
           <img src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-          <img src={'/img/3.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+          <img src={'/img/doilor.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
           {/* <img src={'/img/4.jpg'} className="w-full h-full rounded-r-lg col-span-4 mt-5"></img> */}
         </div>
 
