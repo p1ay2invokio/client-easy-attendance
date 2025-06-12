@@ -89,6 +89,8 @@ const Stock = () => {
                         if (barcode) {
                             let res: any = await new StockMethod().getProductWithBarcode(barcode)
 
+                            console.log(res)
+
                             if (res.status == 200) {
                                 if (res.data.length > 0) {
                                     setProducts(res.data)
