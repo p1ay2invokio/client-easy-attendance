@@ -5,6 +5,7 @@ import { BsCalendarDate } from "react-icons/bs"
 import { FiHome } from "react-icons/fi"
 import Swal from "sweetalert2"
 import { EmployeeMethod } from "../methods/methods"
+import { IoSearch } from "react-icons/io5"
 
 const Bottom = () => {
 
@@ -35,15 +36,15 @@ const Bottom = () => {
             </div>
 
             <div onClick={() => {
-                // navigate.push("/")
-                Swal.fire({
-                    title: "แจ้งปัญหา",
-                    text: 'LINE ID: pzonenet',
-                    icon: 'info'
-                })
+                navigate.push("/stock")
+                // Swal.fire({
+                //     title: "แจ้งปัญหา",
+                //     text: 'LINE ID: pzonenet',
+                //     icon: 'info'
+                // })
             }} className=" flex justify-center items-center flex-col gap-1">
-                <BiNotification size={25} />
-                <p className="font-[medium] text-[14px]">แจ้งปัญหา</p>
+                <IoSearch  size={25} />
+                <p className="font-[medium] text-[14px]">สต๊อกสินค้า</p>
             </div>
 
             {/* <div onClick={() => {
