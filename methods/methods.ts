@@ -191,7 +191,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            axios.get(`/api/product/${barcode}`).then((res) => {
+            axios.get(`${uri_maekhan}/api/product/${barcode}`).then((res) => {
                 resolve(res.data)
             })
         })
