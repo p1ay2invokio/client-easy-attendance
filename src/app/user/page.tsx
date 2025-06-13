@@ -73,14 +73,14 @@ const User = () => {
                     </div>
                 </div>
 
-                <div className="flex w-full justify-start">
+                {userData ? userData.role == 1 ?                 <div className="flex w-full justify-start">
                     <button onClick={() => {
                         navigate.push('/admin')
                     }} className="w-30 h-12 border-1 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600 flex justify-center items-center gap-2">
                         <BiSolidDashboard className="text-sky-600" size={30}/>
                         <p className="font-[medium]">Admin</p>
                     </button>
-                </div>
+                </div> : null : null}
             </div>
 
 
