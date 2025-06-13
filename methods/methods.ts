@@ -196,4 +196,75 @@ export class StockMethod {
             })
         })
     }
+
+    public AddListCheck = (barcode: string, product_name: string, qty: number, count: number) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+            let name = localStorage.getItem("name")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.post(`${uri_maekhan}/api/stock/check`, {
+                barcode: barcode,
+                product_name: product_name,
+                name: name,
+                qty: qty,
+                count: count
+            }).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public getCheckList = () => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`${uri_maekhan}/api/stock`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public DownloadStockUpdate = () => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`${uri_maekhan}/api/stock/update`, {
+                responseType: "blob"
+            }).then((res) => {
+                console.log(res.data)
+                resolve(res.data)
+            })
+        })
+    }
+
+
+    public DeleteStock = () => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.delete(`${uri_maekhan}/api/stock`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
 }

@@ -5,6 +5,8 @@ import Bottom from "../../../components/Bottom"
 import Header from "../../../components/Header"
 import { StockMethod } from "../../../methods/methods"
 import toast, { Toaster } from "react-hot-toast"
+import Swal from "sweetalert2"
+import dayjs from "dayjs"
 
 const highlightText = (text: string, highlight: string) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -12,7 +14,7 @@ const highlightText = (text: string, highlight: string) => {
         <>
             {parts.map((part, i) =>
                 part.toLowerCase() === highlight.toLowerCase() ? (
-                    <span key={i} className="bg-red-600 text-white rounded font-[medium]">{part}</span>
+                    <span key={i} className="bg-gray-300 text-black rounded font-[light]">{part}</span>
                 ) : (
                     <span key={i}>{part}</span>
                 )
@@ -26,6 +28,27 @@ const Stock = () => {
 
     const [products, setProducts] = useState<object[]>([])
     const [barcode, setBarcode] = useState<string>('')
+
+    const [specificProduct, setSepecificProduct] = useState<any>(null)
+
+    const [checkStockModal, setCheckStockModal] = useState<boolean>(false)
+
+    const [count, setCount] = useState<string>('')
+
+    const [list, setList] = useState<object[]>([])
+
+    const init = async () => {
+        let res: any = await new StockMethod().getCheckList()
+
+        console.log(res.data)
+
+        setList(res.data)
+
+    }
+
+    useEffect(() => {
+        init()
+    }, [])
 
     return (
         <div>
@@ -52,15 +75,18 @@ const Stock = () => {
                                 return (
                                     <>
                                         <tr className="h-2" /> {/* Spacer Row */}
-                                        <tr className={`text-[16px] h-10 ${index % 2 == 0 ? 'bg-slate-200' : 'bg-gray-100'}`}>
+                                        <tr onClick={() => {
+                                            setSepecificProduct(item)
+                                            setCheckStockModal(true)
+                                        }} className={`text-[16px] h-10 ${index % 2 == 0 ? 'bg-slate-200' : 'bg-gray-100'}`}>
                                             {/* <td>{item.Barcode}</td> */}
-                                            <td className="p-2 text-start text-black/70 rounded-l-lg">
-                                                <p className="text-start font-[regular]">{item.Name}</p>
+                                            <td className="p-2 text-start text-black rounded-l-lg">
+                                                <p className="text-start font-[medium]">{item.Name}</p>
                                                 <p>{highlightText(item.Barcode, barcode)}</p>
                                                 {/* <p>{highlightText(item.SecondaryBarcode, barcode)}</p> */}
                                             </td>
-                                            <td className="text-green-600 font-[bold]">{Number(item.RetailPrice).toLocaleString('TH-th')}฿</td>
-                                            <td className="text-blue-600 font-[bold] rounded-r-lg">{item.Qty}</td>
+                                            <td className="text-black font-[medium]">{Number(item.RetailPrice).toLocaleString('TH-th')}</td>
+                                            <td className="text-green-600 font-[bold] rounded-r-lg">{item.Qty}</td>
 
                                         </tr>
 
@@ -73,18 +99,74 @@ const Stock = () => {
                 </div>
             </div> : null}
 
+            {checkStockModal && specificProduct ? <div onClick={(e) => {
+                if (e.target == e.currentTarget) {
+                    setCheckStockModal(false)
+                }
+            }} className="w-full h-[100vh] fixed top-0 left-0 flex justify-center items-center z-5 bg-black/70">
+                <div className="w-[330px] h-[300px] p-3 bg-white rounded-xl">
+                    <p className="font-[medium] text-[18px]">เช็คสต็อกสินค้า</p>
+                    <div className="w-full h-[calc(100%-70px)] flex justify-center items-center flex-col">
+                        <p className="font-[regular] text-[23px] mb-2 text-center">{specificProduct.Name}</p>
+                        <input onChange={(e) => {
+                            setCount(e.target.value)
+                        }} type="tel" placeholder={specificProduct.Qty} className="w-full mb-3 h-9 border-1 border-gray-300 outline-none bg-gray-50 text-center font-[medium] text-[20px] rounded-lg"></input>
+                        <button onClick={() => {
+                            // navigate.push('/admin')
 
-            <div className="flex justify-center items-center h-[calc(100vh-200px)]">
-                <div className="bg-white border-1 border-gray-300 p-3 w-[330px] rounded-lg flex gap-2 flex-col justify-center items-center">
 
-                    <div className="text-center">
+
+                            Swal.fire({
+                                title: "คุณต้องการบันทึกการตรวจสอบหรือไม่?",
+                                icon: "question",
+                                showCancelButton: true
+                            }).then(async (res) => {
+                                if (res.isConfirmed) {
+                                    if (count) {
+                                        let res: any = await new StockMethod().AddListCheck(specificProduct.Barcode, specificProduct.Name, specificProduct.Qty, Number(count))
+
+                                        if (res.status == 200) {
+                                            toast.success("เพิ่มรายการเช็คสต็อกสำเร็จ")
+                                            setCheckStockModal(false)
+                                            setSepecificProduct(null)
+                                        }
+                                        console.log(res)
+                                    } else {
+                                        toast.error("ใส่ข้อมูลก่อน!")
+                                    }
+                                }
+                            })
+
+                        }
+                        } className="w-full h-10 border-1 mt-2 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600 flex justify-center items-center gap-2">
+                            {/* <BiSolidDashboard className="text-sky-600" size={30} /> */}
+                            <p className="font-[medium]">บันทึก</p>
+                        </button>
+                        <button onClick={() => {
+                            // navigate.push('/admin')
+                            setCheckStockModal(false)
+                            setSepecificProduct(null)
+                        }} className="w-full h-10 border-1 mt-2 border-red-600 rounded-lg bg-red-400/10 text-red-600 flex justify-center items-center gap-2">
+                            {/* <BiSolidDashboard className="text-sky-600" size={30} /> */}
+                            <p className="font-[medium]">ยกเลิก</p>
+                        </button>
+                    </div>
+                </div>
+            </div> : null}
+
+
+            <div className="flex justify-center">
+                <div className="bg-white relative mt-3  w-[330px] rounded-lg flex gap-2 flex-col justify-center items-center">
+
+                    {/* <div className="text-center">
                         <p className="font-[medium] text-[20px] text-black/70">ระบบค้นหาสินค้า</p>
                         <p className="font-[light] text-[12px] text-black/70">ร้านแม่ขานแฟร์</p>
-                    </div>
+                    </div> */}
 
-                    <input type="tel" className="outline-none border-1 border-gray-300 bg-gray-50 rounded-md h-10 w-full text-center font-[regular]" onChange={(e) => {
+                    <input type="text" className="outline-none border-1 border-gray-300 bg-white rounded-md h-10 w-full text-center font-[regular]" onChange={(e) => {
                         setBarcode(e.target.value)
                     }} placeholder="ค้นหาสินค้าด้วย Barcode"></input>
+
                     <button onClick={async () => {
                         if (barcode) {
                             let res: any = await new StockMethod().getProductWithBarcode(barcode)
@@ -103,11 +185,38 @@ const Stock = () => {
                         } else {
                             toast.error('กรอก barcode ก่อนค้นหา!')
                         }
-                    }} className="w-full h-9 bg-blue-400/20 cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg">
-                        <p className="font-[medium]">ค้นหาสินค้า</p>
+                    }} className="w-15 h-8 absolute top-1 right-2 bg-blue-400/20 cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg">
+                        <p className="font-[medium]">ค้นหา</p>
                     </button>
                 </div>
             </div>
+
+
+            <table className="w-full mt-4">
+                <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
+                    <tr>
+                        <td>วันที่</td>
+                        <td>พนักงาน</td>
+                        <td>ชื่อ</td>
+                        <td>จำนวน/นับ</td>
+                        <td>ส่วนต่าง</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {list ? list.map((item: any, index: number) => {
+                        return (
+                            <tr className={`text-center font-[light] text-[16px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
+                                <td>{dayjs(item.Timestamp).locale("th").format("DD-MM-YY")}</td>
+                                <td>{item.Name}</td>
+                                <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName}</p>
+                                <td>{item.Qty}/{item.Count}</td>
+                                <td>{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
+                            </tr>
+                        )
+                    }) : null}
+                </tbody>
+            </table>
+
             <Bottom />
 
             <Toaster position="bottom-center" />
