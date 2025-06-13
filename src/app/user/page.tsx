@@ -1,11 +1,14 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { EmployeeMethod } from "../../../methods/methods"
+import { AdminMethod, EmployeeMethod, StockMethod } from "../../../methods/methods"
 import Header from "../../../components/Header"
 import Bottom from "../../../components/Bottom"
 import { useRouter } from "next/navigation"
-import { BiSolidDashboard } from "react-icons/bi"
+import { BiFile, BiSolidDashboard, BiTrash } from "react-icons/bi"
+import dayjs from "dayjs"
+import toast from "react-hot-toast"
+import Swal from "sweetalert2"
 
 const User = () => {
 
@@ -73,13 +76,61 @@ const User = () => {
                     </div>
                 </div>
 
-                <div className="flex w-full justify-start">
-                    <button onClick={() => {
-                        navigate.push('/admin')
-                    }} className="w-30 h-12 border-1 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600 flex justify-center items-center gap-2">
-                        <BiSolidDashboard className="text-sky-600" size={30}/>
-                        <p className="font-[medium]">Admin</p>
-                    </button>
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="flex w-full justify-start">
+                        <button onClick={() => {
+                            navigate.push('/admin')
+                        }} className="w-30 h-12 border-1 border-sky-600 rounded-lg bg-sky-400/10 text-sky-600 flex justify-center items-center gap-2">
+                            <BiSolidDashboard className="text-sky-600" size={30} />
+                            <p className="font-[medium]">Admin</p>
+                        </button>
+                    </div>
+
+                    <div className="flex w-full justify-start">
+                        <button onClick={async () => {
+                            let res: any = await new StockMethod().DownloadStockUpdate()
+
+                            const blob = res; // <-- ไม่ต้อง .blob()
+                            const url = window.URL.createObjectURL(blob);
+
+
+
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `stock-file-${dayjs().format("DD-MM-YYYY")}.txt`;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        }} className="w-30 h-12 border-1 border-green-600 rounded-lg bg-green-400/10 text-green-600 flex justify-center items-center gap-2">
+                            <BiFile className="text-green-600" size={30} />
+                            <p className="font-[medium]">Export</p>
+                        </button>
+                    </div>
+
+                    <div className="flex w-full justify-start">
+                        <button onClick={async () => {
+                            Swal.fire({
+                                title: "ลบข้อมูลใน stock?",
+                                icon: 'warning',
+                                showCancelButton: true
+                            }).then(async (res) => {
+                                if (res.isConfirmed) {
+                                    let res: any = await new StockMethod().DeleteStock()
+
+                                    if (res.status == 200) {
+                                        toast.success(res.message)
+                                    }
+                                    console.log(res)
+                                }
+                            })
+
+                            // if(res)
+                        }} className="w-30 h-12 border-1 border-red-600 rounded-lg bg-red-400/10 text-red-600 flex justify-center items-center gap-2">
+                            <BiTrash className="text-red-600" size={30} />
+                            <p className="font-[medium]">Delete</p>
+                        </button>
+                    </div>
                 </div>
             </div>
 
