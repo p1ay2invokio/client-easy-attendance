@@ -7,6 +7,7 @@ import { StockMethod } from "../../../methods/methods"
 import toast, { Toaster } from "react-hot-toast"
 import Swal from "sweetalert2"
 import dayjs from "dayjs"
+import { BiTrash } from "react-icons/bi"
 
 const highlightText = (text: string, highlight: string) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -60,6 +61,7 @@ const Stock = () => {
             {products && products.length > 0 ? <div onClick={(e) => {
                 if (e.target == e.currentTarget) {
                     setProducts([])
+                    setBarcode('')
                 }
             }} className="w-full h-[100vh] fixed top-0 left-0 bg-black/50 z-3 flex flex-col justify-center items-center">
                 <div className="w-[330px] rounded-lg shadow h-140 p-3 bg-white overflow-scroll translate-y-[-30px]">
@@ -110,7 +112,7 @@ const Stock = () => {
                     <p className="font-[medium] text-[18px]">เช็คสต็อกสินค้า</p>
                     <div className="w-full h-[calc(100%-70px)] flex justify-center items-center flex-col">
                         <p className="font-[regular] text-[23px] mb-2 text-center">{specificProduct.Name}</p>
-                        <input onChange={(e) => {
+                        <input value={count} onChange={(e) => {
                             setCount(e.target.value)
                         }} type="tel" placeholder={specificProduct.Qty} className="w-full mb-3 h-9 border-1 border-gray-300 outline-none bg-gray-50 text-center font-[medium] text-[20px] rounded-lg"></input>
                         <button onClick={() => {
@@ -135,17 +137,15 @@ const Stock = () => {
                                             setProducts([])
                                             setBarcode('')
                                             setCount('')
-                                            setList([])
 
                                             setRefresh(refresh + 1)
-                                        } else if (res.status == 204) {
+                                        } else if (res.status == 400) {
                                             toast.error(res.message)
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
                                             setProducts([])
                                             setBarcode('')
                                             setCount('')
-                                            setList([])
                                         } else {
                                             toast.error(res.message)
                                             setCheckStockModal(false)
@@ -153,7 +153,6 @@ const Stock = () => {
                                             setProducts([])
                                             setBarcode('')
                                             setCount('')
-                                            setList([])
                                         }
                                         console.log(res)
                                     } else {
@@ -172,10 +171,7 @@ const Stock = () => {
                             // navigate.push('/admin')
                             setCheckStockModal(false)
                             setSepecificProduct(null)
-                            setProducts([])
-                            setBarcode('')
                             setCount('')
-                            setList([])
                         }} className="w-full h-10 border-1 mt-2 border-red-600 rounded-lg bg-red-400/10 text-red-600 flex justify-center items-center gap-2">
                             {/* <BiSolidDashboard className="text-sky-600" size={30} /> */}
                             <p className="font-[medium]">ยกเลิก</p>
@@ -193,7 +189,7 @@ const Stock = () => {
                         <p className="font-[light] text-[12px] text-black/70">ร้านแม่ขานแฟร์</p>
                     </div> */}
 
-                    <input type="text" className="outline-none border-1 border-gray-300 bg-white rounded-md h-10 w-full text-center font-[regular]" onChange={(e) => {
+                    <input value={barcode} type="text" className="outline-none border-1 border-gray-300 bg-white rounded-md h-10 w-full text-center font-[regular]" onChange={(e) => {
                         setBarcode(e.target.value)
                     }} placeholder="ค้นหาสินค้าด้วย Barcode"></input>
 
@@ -213,7 +209,6 @@ const Stock = () => {
                                     setProducts([])
                                     setBarcode('')
                                     setCount('')
-                                    setList([])
                                 }
                             }
 
@@ -235,22 +230,43 @@ const Stock = () => {
             <table className="w-full mt-2">
                 <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
                     <tr>
-                        <td>วันที่</td>
+                        <td>Barcode</td>
                         <td>พนักงาน</td>
                         <td>ชื่อ</td>
-                        <td>จำนวน/นับ</td>
+                        {/* <td>บาร์โค้ด</td> */}
+                        <td className="text-[14px]">จำนวน/นับ</td>
                         <td>ส่วนต่าง</td>
                     </tr>
                 </thead>
                 <tbody>
                     {list ? list.map((item: any, index: number) => {
                         return (
-                            <tr className={`text-center font-[light] text-[16px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
-                                <td>{item.Timestamp}</td>
-                                <td>{item.Name}</td>
-                                <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName}</p>
-                                <td>{item.Qty}/{item.Count}</td>
-                                <td>{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
+                            <tr className={`text-center font-[light] text-[14px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
+                                <td className="font-[light] w-2">
+                                    <p className="w-25 overflow-hidden text-ellipsis whitespace-nowarp">{item.Barcode}</p>
+                                </td>
+                                <td>
+                                    <p>{item.Name}</p>
+                                    <p className="text-[12px]">{item.Timestamp}</p>
+                                </td>
+                                <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName} </p>
+                                <td className="w-[10px]">{item.Qty}/{item.Count}</td>
+                                <td className="w-[10px]">{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
+                                <td><BiTrash className="text-red-600" onClick={async () => {
+                                    Swal.fire({
+                                        title: 'ต้องการลบออกจาก list?',
+                                        showCancelButton: true
+                                    }).then(async(res) => {
+                                        if (res.isConfirmed) {
+                                            let res: any = await new StockMethod().DeleteStockId(item.Id)
+
+                                            if (res.status == 200) {
+                                                toast.success(res.message)
+                                                setRefresh(refresh + 1)
+                                            }
+                                        }
+                                    })
+                                }} size={20} /></td>
                             </tr>
                         )
                     }) : null}

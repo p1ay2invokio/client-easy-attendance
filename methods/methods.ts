@@ -216,8 +216,8 @@ export class StockMethod {
                 today: today.toString()
             }).then((res) => {
                 resolve(res)
-            }).catch((err)=>{
-                resolve(err);
+            }).catch((err) => {
+                resolve(err.response?.data);
             })
         })
     }
@@ -266,6 +266,21 @@ export class StockMethod {
             }
 
             axios.delete(`${uri_maekhan}/api/stock`).then((res) => {
+                resolve(res.data)
+            })
+        })
+    }
+
+    public DeleteStockId = (sid: number) => {
+        return new Promise((resolve) => {
+
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.delete(`${uri_maekhan}/api/stock/${sid}`).then((res) => {
                 resolve(res.data)
             })
         })
