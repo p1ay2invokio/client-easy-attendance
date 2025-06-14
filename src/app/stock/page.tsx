@@ -37,6 +37,8 @@ const Stock = () => {
 
     const [list, setList] = useState<object[]>([])
 
+    const [refresh, setRefresh] = useState<number>(0)
+
     const init = async () => {
         let res: any = await new StockMethod().getCheckList()
 
@@ -48,7 +50,7 @@ const Stock = () => {
 
     useEffect(() => {
         init()
-    }, [])
+    }, [refresh])
 
     return (
         <div>
@@ -130,7 +132,13 @@ const Stock = () => {
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
                                             setProducts([])
-                                        }else if(res.status == 204){
+
+                                        } else if (res.status == 204) {
+                                            toast.error(res.message)
+                                            setCheckStockModal(false)
+                                            setSepecificProduct(null)
+                                            setProducts([])
+                                        } else {
                                             toast.error(res.message)
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)

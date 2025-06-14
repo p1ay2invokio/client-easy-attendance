@@ -215,6 +215,8 @@ export class StockMethod {
                 count: count
             }).then((res) => {
                 resolve(res.data)
+            }).catch((err)=>{
+                resolve(err.response?.data || { error: true, message: "Delete failed" });
             })
         })
     }
