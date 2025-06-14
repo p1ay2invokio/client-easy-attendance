@@ -133,6 +133,9 @@ const Stock = () => {
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
                                             setProducts([])
+                                            setBarcode('')
+                                            setCount('')
+                                            setList([])
 
                                             setRefresh(refresh + 1)
                                         } else if (res.status == 204) {
@@ -140,15 +143,22 @@ const Stock = () => {
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
                                             setProducts([])
+                                            setBarcode('')
+                                            setCount('')
+                                            setList([])
                                         } else {
                                             toast.error(res.message)
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
                                             setProducts([])
+                                            setBarcode('')
+                                            setCount('')
+                                            setList([])
                                         }
                                         console.log(res)
                                     } else {
                                         toast.error("ใส่ข้อมูลก่อน!")
+                                        setCount('')
                                     }
                                 }
                             })
@@ -162,6 +172,10 @@ const Stock = () => {
                             // navigate.push('/admin')
                             setCheckStockModal(false)
                             setSepecificProduct(null)
+                            setProducts([])
+                            setBarcode('')
+                            setCount('')
+                            setList([])
                         }} className="w-full h-10 border-1 mt-2 border-red-600 rounded-lg bg-red-400/10 text-red-600 flex justify-center items-center gap-2">
                             {/* <BiSolidDashboard className="text-sky-600" size={30} /> */}
                             <p className="font-[medium]">ยกเลิก</p>
@@ -194,6 +208,12 @@ const Stock = () => {
                                     setProducts(res.data)
                                 } else {
                                     toast.error("ไม่พบ Barcode นี้!")
+                                    setCheckStockModal(false)
+                                    setSepecificProduct(null)
+                                    setProducts([])
+                                    setBarcode('')
+                                    setCount('')
+                                    setList([])
                                 }
                             }
 
