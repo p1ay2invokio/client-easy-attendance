@@ -213,11 +213,11 @@ export class StockMethod {
                 name: name,
                 qty: qty,
                 count: count,
-                today: today
+                today: today.toString()
             }).then((res) => {
                 resolve(res.data)
             }).catch((err)=>{
-                resolve(err.response?.data || { error: true, message: "Delete failed" });
+                resolve(err);
             })
         })
     }

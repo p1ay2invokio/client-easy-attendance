@@ -226,7 +226,7 @@ const Stock = () => {
                     {list ? list.map((item: any, index: number) => {
                         return (
                             <tr className={`text-center font-[light] text-[16px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
-                                <td>{dayjs(item.Timestamp).locale("th").format("DD-MM-YY")}</td>
+                                <td>{dayjs(Number(item.Timestamp)).locale("th").format("DD-MM-YY")}</td>
                                 <td>{item.Name}</td>
                                 <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName}</p>
                                 <td>{item.Qty}/{item.Count}</td>
