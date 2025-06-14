@@ -133,6 +133,7 @@ const Stock = () => {
                                             setSepecificProduct(null)
                                             setProducts([])
 
+                                            setRefresh(refresh + 1)
                                         } else if (res.status == 204) {
                                             toast.error(res.message)
                                             setCheckStockModal(false)
