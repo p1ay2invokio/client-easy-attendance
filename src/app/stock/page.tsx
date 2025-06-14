@@ -125,7 +125,7 @@ const Stock = () => {
                             }).then(async (res) => {
                                 if (res.isConfirmed) {
                                     if (count) {
-                                        let today = dayjs().unix()
+                                        let today = dayjs().locale('th').format("DD/MM/YY")
                                         let res: any = await new StockMethod().AddListCheck(specificProduct.Barcode, specificProduct.Name, specificProduct.Qty, Number(count), today)
 
                                         if (res.status == 200) {
@@ -226,7 +226,7 @@ const Stock = () => {
                     {list ? list.map((item: any, index: number) => {
                         return (
                             <tr className={`text-center font-[light] text-[16px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
-                                <td>{dayjs(Number(item.Timestamp)).locale("th").format("DD-MM-YY")}</td>
+                                <td>{item.Timestamp}</td>
                                 <td>{item.Name}</td>
                                 <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName}</p>
                                 <td>{item.Qty}/{item.Count}</td>

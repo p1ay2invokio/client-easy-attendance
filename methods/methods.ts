@@ -197,7 +197,7 @@ export class StockMethod {
         })
     }
 
-    public AddListCheck = (barcode: string, product_name: string, qty: number, count: number, today: number) => {
+    public AddListCheck = (barcode: string, product_name: string, qty: number, count: number, today: string) => {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
@@ -215,7 +215,7 @@ export class StockMethod {
                 count: count,
                 today: today.toString()
             }).then((res) => {
-                resolve(res.data)
+                resolve(res)
             }).catch((err)=>{
                 resolve(err);
             })
