@@ -125,7 +125,8 @@ const Stock = () => {
                             }).then(async (res) => {
                                 if (res.isConfirmed) {
                                     if (count) {
-                                        let res: any = await new StockMethod().AddListCheck(specificProduct.Barcode, specificProduct.Name, specificProduct.Qty, Number(count))
+                                        let today = dayjs().unix()
+                                        let res: any = await new StockMethod().AddListCheck(specificProduct.Barcode, specificProduct.Name, specificProduct.Qty, Number(count), today)
 
                                         if (res.status == 200) {
                                             toast.success("เพิ่มรายการเช็คสต็อกสำเร็จ")
@@ -206,8 +207,12 @@ const Stock = () => {
                 </div>
             </div>
 
+            <div className="w-full flex justify-center items-center mt-2">
+                <p className="font-[light] text-red-500">***ต้องใช้ Wifi ของร้านเท่านั้น***</p>
+            </div>
 
-            <table className="w-full mt-4">
+
+            <table className="w-full mt-2">
                 <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
                     <tr>
                         <td>วันที่</td>
