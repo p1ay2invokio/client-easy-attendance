@@ -129,6 +129,12 @@ const Stock = () => {
                                             toast.success("เพิ่มรายการเช็คสต็อกสำเร็จ")
                                             setCheckStockModal(false)
                                             setSepecificProduct(null)
+                                            setProducts([])
+                                        }else if(res.status == 204){
+                                            toast.error(res.message)
+                                            setCheckStockModal(false)
+                                            setSepecificProduct(null)
+                                            setProducts([])
                                         }
                                         console.log(res)
                                     } else {

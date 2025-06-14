@@ -76,7 +76,7 @@ const User = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                {userData && userData.role == 1 ? <div className="grid grid-cols-2 gap-3">
                     <div className="flex w-full justify-start">
                         <button onClick={() => {
                             navigate.push('/admin')
@@ -131,7 +131,8 @@ const User = () => {
                             <p className="font-[medium]">Delete</p>
                         </button>
                     </div>
-                </div>
+                </div> : null}
+
             </div>
 
 
