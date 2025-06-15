@@ -42,7 +42,7 @@ const Stock = () => {
 
     const [refresh, setRefresh] = useState<number>(0)
 
-    const [loading, setLoading] = useState<boolean>(true)
+    // const [loading, setLoading] = useState<boolean>(true)
 
     const init = async () => {
         let res: any = await new StockMethod().getCheckList()
@@ -51,10 +51,8 @@ const Stock = () => {
         if(!select_storage){
             setSelect(0)
             localStorage.setItem('select', '0')
-            setLoading(false)
         }else{
             setSelect(Number(select_storage))
-            setLoading(false)
         }
 
         console.log(res.data)
@@ -66,9 +64,9 @@ const Stock = () => {
         init()
     }, [refresh])
 
-    if(loading){
-        return null
-    }
+    // if(loading){
+    //     return null
+    // }
 
 
 
