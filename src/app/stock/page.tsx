@@ -30,6 +30,8 @@ const Stock = () => {
     const [products, setProducts] = useState<object[]>([])
     const [barcode, setBarcode] = useState<string>('')
 
+    let [select, setSelect] = useState(0)
+
     const [specificProduct, setSepecificProduct] = useState<any>(null)
 
     const [checkStockModal, setCheckStockModal] = useState<boolean>(false)
@@ -40,18 +42,35 @@ const Stock = () => {
 
     const [refresh, setRefresh] = useState<number>(0)
 
+    const [loading, setLoading] = useState<boolean>(true)
+
     const init = async () => {
         let res: any = await new StockMethod().getCheckList()
+        let select_storage: any = localStorage.getItem("select")
+
+        if(!select_storage){
+            setSelect(0)
+            localStorage.setItem('select', '0')
+        }else{
+            setSelect(Number(select_storage))
+        }
 
         console.log(res.data)
 
         setList(res.data)
 
+        setLoading(false)
     }
 
     useEffect(() => {
         init()
     }, [refresh])
+
+    if(loading){
+        return null
+    }
+
+
 
     return (
         <div>
@@ -226,6 +245,17 @@ const Stock = () => {
                 <p className="font-[light] text-red-500">***ต้องใช้ Wifi ของร้านเท่านั้น***</p>
             </div>
 
+            <div className="w-full flex justify-center items-center gap-2 mt-2">
+                <button onClick={()=>{
+                    setSelect(0)
+                    localStorage.setItem('select','0')
+                }} className={`w-20 h-8 ${select == 0 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>แม่ขาน</button>
+                <button onClick={()=>{
+                    setSelect(1)
+                    localStorage.setItem('select','1')
+                }} className={`w-20 h-8 ${select == 1 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>สันป่าตอง</button>
+            </div>
+
 
             <table className="w-full mt-2">
                 <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
@@ -249,14 +279,14 @@ const Stock = () => {
                                     <p>{item.Name}</p>
                                     <p className="text-[12px]">{item.Timestamp}</p>
                                 </td>
-                                <p className="w-20 truncate whitespace-nowrap text-ellipsis">{item.ProductName} </p>
+                                <p className="w-[100px]">{item.ProductName} </p>
                                 <td className="w-[10px]">{item.Qty}/{item.Count}</td>
                                 <td className="w-[10px]">{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
                                 <td><BiTrash className="text-red-600" onClick={async () => {
                                     Swal.fire({
                                         title: 'ต้องการลบออกจาก list?',
                                         showCancelButton: true
-                                    }).then(async(res) => {
+                                    }).then(async (res) => {
                                         if (res.isConfirmed) {
                                             let res: any = await new StockMethod().DeleteStockId(item.Id)
 

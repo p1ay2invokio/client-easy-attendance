@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios"
-import { uri, uri_maekhan } from "./config"
+import { uri, uri_maekhan, uri_sanpatong } from "./config"
 
 export class AttendanceMethod {
     public attend = (aid: number, my_lat: number, my_long: number) => {
@@ -186,12 +186,13 @@ export class StockMethod {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.get(`${uri_maekhan}/api/product/${barcode}`).then((res) => {
+            axios.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/product/${barcode}`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -202,12 +203,13 @@ export class StockMethod {
 
             let userId = localStorage.getItem("id")
             let name = localStorage.getItem("name")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.post(`${uri_maekhan}/api/stock/check`, {
+            axios.post(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/stock/check`, {
                 barcode: barcode,
                 product_name: product_name,
                 name: name,
@@ -226,12 +228,13 @@ export class StockMethod {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.get(`${uri_maekhan}/api/stock`).then((res) => {
+            axios.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/stock`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -241,12 +244,13 @@ export class StockMethod {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.get(`${uri_maekhan}/api/stock/update`, {
+            axios.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/stock/update`, {
                 responseType: "blob"
             }).then((res) => {
                 console.log(res.data)
@@ -260,12 +264,13 @@ export class StockMethod {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.delete(`${uri_maekhan}/api/stock`).then((res) => {
+            axios.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/stock`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -275,12 +280,13 @@ export class StockMethod {
         return new Promise((resolve) => {
 
             let userId = localStorage.getItem("id")
+            let select = Number(localStorage.getItem('select'))
 
             if (!userId) {
                 window.location.href = "/login"
             }
 
-            axios.delete(`${uri_maekhan}/api/stock/${sid}`).then((res) => {
+            axios.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/stock/${sid}`).then((res) => {
                 resolve(res.data)
             })
         })
