@@ -46,13 +46,18 @@ const Stock = () => {
 
     const init = async () => {
         let res: any = await new StockMethod().getCheckList()
-        let select_storage: any = localStorage.getItem("select")
+        // let select_storage: any = localStorage.getItem("select")
 
-        if(!select_storage){
-            setSelect(0)
-            localStorage.setItem('select', '0')
-        }else{
-            setSelect(Number(select_storage))
+        if (typeof window !== 'undefined') {
+            let select_storage = localStorage.getItem("select")
+
+            if (select_storage === null) {
+                setSelect(0)
+                localStorage.setItem('select', '0')
+            } else {
+                setSelect(Number(select_storage))
+                localStorage.setItem('select', select_storage)
+            }
         }
 
         console.log(res.data)
@@ -244,13 +249,13 @@ const Stock = () => {
             </div>
 
             <div className="w-full flex justify-center items-center gap-2 mt-2">
-                <button onClick={()=>{
+                <button onClick={() => {
                     setSelect(0)
-                    localStorage.setItem('select','0')
+                    localStorage.setItem('select', '0')
                 }} className={`w-20 h-8 ${select == 0 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>แม่ขาน</button>
-                <button onClick={()=>{
+                <button onClick={() => {
                     setSelect(1)
-                    localStorage.setItem('select','1')
+                    localStorage.setItem('select', '1')
                 }} className={`w-20 h-8 ${select == 1 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>สันป่าตอง</button>
             </div>
 
