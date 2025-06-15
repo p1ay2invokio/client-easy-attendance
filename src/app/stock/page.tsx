@@ -42,23 +42,10 @@ const Stock = () => {
 
     const [refresh, setRefresh] = useState<number>(0)
 
-    // const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(true)
 
     const init = async () => {
         let res: any = await new StockMethod().getCheckList()
-        // let select_storage: any = localStorage.getItem("select")
-
-        if (typeof window !== 'undefined') {
-            let select_storage = localStorage.getItem("select")
-
-            if (select_storage === null) {
-                setSelect(0)
-                localStorage.setItem('select', '0')
-            } else {
-                setSelect(Number(select_storage))
-                localStorage.setItem('select', select_storage)
-            }
-        }
 
         console.log(res.data)
 
@@ -66,12 +53,26 @@ const Stock = () => {
     }
 
     useEffect(() => {
+
+        let select_storage: any = localStorage.getItem("select")
+
+        if (!select_storage) {
+            localStorage.setItem('select', '0')
+            setSelect(0)
+            setLoading(false)
+        } else {
+            setSelect(Number(select_storage))
+            setLoading(false)
+        }
+
+        console.log(select_storage)
+
         init()
     }, [refresh])
 
-    // if(loading){
-    //     return null
-    // }
+    if(loading){
+        return null
+    }
 
 
 
