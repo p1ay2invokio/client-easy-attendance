@@ -51,15 +51,15 @@ const Stock = () => {
         if(!select_storage){
             setSelect(0)
             localStorage.setItem('select', '0')
+            setLoading(false)
         }else{
             setSelect(Number(select_storage))
+            setLoading(false)
         }
 
         console.log(res.data)
 
         setList(res.data)
-
-        setLoading(false)
     }
 
     useEffect(() => {
