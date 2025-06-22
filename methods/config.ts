@@ -1,4 +1,4 @@
-export const uri = `https://attend.playapi.shop`
+export const uri = `https://att.playapi.shop`
 export const uri_maekhan = `https://192.168.1.7`
 export const uri_sanpatong = `https://192.168.1.29`
 // export const uri_maekhan = `http://localhost:3001`
