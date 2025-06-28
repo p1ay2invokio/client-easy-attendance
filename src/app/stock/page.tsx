@@ -8,6 +8,9 @@ import toast, { Toaster } from "react-hot-toast"
 import Swal from "sweetalert2"
 import dayjs from "dayjs"
 import { BiTrash } from "react-icons/bi"
+import { BsArrowRight } from "react-icons/bs"
+import { HiDocument } from "react-icons/hi"
+import { PiResizeFill } from "react-icons/pi"
 
 const highlightText = (text: string, highlight: string) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -44,7 +47,21 @@ const Stock = () => {
 
     const [loading, setLoading] = useState<boolean>(true)
 
+    const [resize, setResize] = useState<boolean>(false)
+
     const init = async () => {
+        // setList([
+        //     {
+        //         Barcode: '123124213',
+        //         Timestamp: '16/06/25',
+        //         Name: 'โบว์',
+        //         Qty: 5,
+        //         Count: 5,
+        //         Diff: 1,
+        //         ProductName: 'จานเปลไข่ 10 นิ้วสีฟ้า BASIC'
+        //     }
+        // ])
+
         let res: any = await new StockMethod().getCheckList()
 
         console.log(res.data)
@@ -55,6 +72,11 @@ const Stock = () => {
     useEffect(() => {
 
         let select_storage: any = localStorage.getItem("select")
+        let resize_storage = localStorage.getItem("resize-table") === 'true' ? true : false
+
+        console.log(resize_storage)
+
+        setResize(resize_storage)
 
         if (!select_storage) {
             localStorage.setItem('select', '0')
@@ -70,7 +92,7 @@ const Stock = () => {
         init()
     }, [refresh])
 
-    if(loading){
+    if (loading) {
         return null
     }
 
@@ -261,31 +283,43 @@ const Stock = () => {
             </div>
 
 
+            <PiResizeFill onClick={() => {
+                if (resize == false) {
+                    toast.success("เปลี่ยนเป็นขนาดย่อ")
+                    localStorage.setItem('resize-table', 'true')
+                } else {
+                    toast.success("เปลี่ยนเป็นขนาดเต็ม")
+                    localStorage.setItem('resize-table', 'false')
+                }
+                setResize(!resize)
+            }} size={40} className="ml-3" />
+
             <table className="w-full mt-2">
                 <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
                     <tr>
-                        <td>Barcode</td>
-                        <td>พนักงาน</td>
-                        <td>ชื่อ</td>
+                        {resize ? null : <td className="text-[14px]">Barcode</td>}
+                        {resize ? null : <td className="text-[14px]">พนักงาน</td>}
+                        <td className="text-[14px]">ชื่อ</td>
                         {/* <td>บาร์โค้ด</td> */}
                         <td className="text-[14px]">จำนวน/นับ</td>
-                        <td>ส่วนต่าง</td>
+                        <td className="text-[14px]">ส่วนต่าง</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
                     {list ? list.map((item: any, index: number) => {
                         return (
-                            <tr className={`text-center font-[light] text-[14px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
-                                <td className="font-[light] w-2">
+                            <tr className={`text-center ${resize ? 'font-[medium]' : 'font-[light]'} text-[14px] h-10 ${index % 2 == 0 ? "bg-slate-200" : ""}`}>
+                                {resize ? null : <td className="font-[light] w-2">
                                     <p className="w-25 overflow-hidden text-ellipsis whitespace-nowarp">{item.Barcode}</p>
-                                </td>
-                                <td>
+                                </td>}
+                                {resize ? null : <td>
                                     <p>{item.Name}</p>
                                     <p className="text-[12px]">{item.Timestamp}</p>
-                                </td>
-                                <p className="w-[100px]">{item.ProductName} </p>
-                                <td className="w-[10px]">{item.Qty}/{item.Count}</td>
-                                <td className="w-[10px]">{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
+                                </td>}
+                                <td className={`${resize ? "" : '"w-[100px]"'}`}>{item.ProductName} </td>
+                                <td className={`${resize ? "" : "w-[10px]"}`}>{item.Qty}/{item.Count}</td>
+                                <td className={`${resize ? "" : "w-[10px]"} ${item.Diff == 0 ? 'text-green-600' : item.Diff >= 1 ? 'text-blue-500' : item.Diff <= -1 ? 'text-red-400' : 'text-black'}`}>{item.Diff > 0 ? '+' + item.Diff : item.Diff}</td>
                                 <td><BiTrash className="text-red-600" onClick={async () => {
                                     Swal.fire({
                                         title: 'ต้องการลบออกจาก list?',
