@@ -3,7 +3,7 @@
 import dayjs from "dayjs"
 import 'dayjs/locale/th'
 import Header from "../../components/Header"
-import { AttendanceMethod } from "../../methods/methods"
+import { AttendanceMethod, StockMethod } from "../../methods/methods"
 import Swal from "sweetalert2"
 import { useEffect, useState } from "react"
 import Bottom from "../../components/Bottom"
@@ -61,8 +61,14 @@ const HomePage = () => {
   })
   let [loadTime, setLoadTime] = useState(true)
 
+  let [san, setSan] = useState<any>(null)
+  let [mae, setMae] = useState<any>(null)
+  let [doi, setDoi] = useState<any>(null)
+
   const initial = async () => {
     let res: any = await new AttendanceMethod().todayData()
+
+    // setNotifyAll(data)
 
     console.log(res)
 
@@ -116,6 +122,19 @@ const HomePage = () => {
         toast.error("Location occurred unknow error")
       }
     })
+
+
+    let maekhan = await new StockMethod().CountNotifyMaekhan()
+    let sanpatong = await new StockMethod().CountNotifySanpatong()
+    let doilor = await new StockMethod().CountNotifyDoilor()
+
+
+    console.log(sanpatong)
+
+    setMae(maekhan)
+    setSan(sanpatong)
+    setDoi(doilor)
+
   }
 
   useEffect(() => {
@@ -157,10 +176,33 @@ const HomePage = () => {
           <img src={'/img/5.jpg'} className="w-full object-cotain h-full rounded-lg"></img>
         </div>
 
-        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3 h-20 gap-2 mb-2 rounded-lg shadow p-1">
-          <img src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-          <img src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-          <img src={'/img/doilor.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3  gap-2 mb-2 rounded-lg shadow p-1">
+          <div className="relative">
+            <img onClick={() => {
+              navigate.push("/notify/maekhan")
+            }} src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+              <p>{mae && mae.count ? mae.count : 0}</p>
+            </div>
+
+          </div>
+          <div className="relative">
+            <img onClick={() => {
+              navigate.push("/notify/sanpatong")
+            }} src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+              <p>{san && san.count ? san.count : 0}</p>
+            </div>
+          </div>
+          <div className="relative">
+            <img onClick={() => {
+              navigate.push("/notify/doilor")
+            }} src={'/img/doilor.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
+            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+              <p>{doi && doi.count ? doi.count : 0}</p>
+            </div>
+
+          </div>
           {/* <img src={'/img/4.jpg'} className="w-full h-full rounded-r-lg col-span-4 mt-5"></img> */}
         </div>
 
