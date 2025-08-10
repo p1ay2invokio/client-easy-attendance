@@ -271,15 +271,23 @@ const Stock = () => {
                 <p className="font-[light] text-red-500">***ต้องใช้ Wifi ของร้านเท่านั้น***</p>
             </div>
 
+
             <div className="w-full flex justify-center items-center gap-2 mt-2">
                 <button onClick={() => {
                     setSelect(0)
                     localStorage.setItem('select', '0')
+                    setRefresh(refresh + 1)
                 }} className={`w-20 h-8 ${select == 0 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>แม่ขาน</button>
                 <button onClick={() => {
                     setSelect(1)
                     localStorage.setItem('select', '1')
+                    setRefresh(refresh + 1)
                 }} className={`w-20 h-8 ${select == 1 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>สันป่าตอง</button>
+                <button onClick={() => {
+                    setSelect(2)
+                    localStorage.setItem('select', '2')
+                    setRefresh(refresh + 1)
+                }} className={`w-20 h-8 ${select == 2 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>ดอยหล่อ</button>
             </div>
 
 
