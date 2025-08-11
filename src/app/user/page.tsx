@@ -131,7 +131,22 @@ const User = () => {
                             <p className="font-[medium]">Delete</p>
                         </button>
                     </div>
-                </div> : null}
+
+                    <div className="flex w-full justify-start">
+                        <button onClick={async () => {
+
+                            navigate.push("/dashboard")
+
+                            // if(res)
+                        }} className="w-30 h-12 border-1 border-purple-600 rounded-lg bg-purple-400/10 text-purple-600 flex justify-center items-center gap-2">
+                            <BiSolidDashboard className="text-purple-600" size={30} />
+                            <p className="font-[medium]">Stock</p>
+                        </button>
+                    </div>
+
+                </div>
+
+                    : null}
 
             </div>
 

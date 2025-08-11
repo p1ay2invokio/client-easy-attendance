@@ -11,9 +11,12 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import { TbGpsFilled } from "react-icons/tb";
 import { BiSolidDashboard } from "react-icons/bi"
-import { MdDashboard } from "react-icons/md"
+import { MdDashboard, MdOutlineDashboard } from "react-icons/md"
 import { useRouter } from "next/navigation"
 import toast, { Toaster } from "react-hot-toast"
+import { RiDashboard2Fill } from "react-icons/ri"
+import { VscDashboard } from "react-icons/vsc"
+import { FaDashcube } from "react-icons/fa6"
 
 dayjs.extend(duration)
 

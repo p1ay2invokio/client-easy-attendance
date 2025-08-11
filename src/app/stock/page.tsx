@@ -7,10 +7,11 @@ import { StockMethod } from "../../../methods/methods"
 import toast, { Toaster } from "react-hot-toast"
 import Swal from "sweetalert2"
 import dayjs from "dayjs"
-import { BiTrash } from "react-icons/bi"
+import { BiSolidDashboard, BiTrash } from "react-icons/bi"
 import { BsArrowRight } from "react-icons/bs"
 import { HiDocument } from "react-icons/hi"
 import { PiResizeFill } from "react-icons/pi"
+import { useRouter } from "next/navigation"
 
 const highlightText = (text: string, highlight: string) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -48,6 +49,8 @@ const Stock = () => {
     const [loading, setLoading] = useState<boolean>(true)
 
     const [resize, setResize] = useState<boolean>(false)
+
+    let navigate = useRouter()
 
     const init = async () => {
         // setList([
@@ -300,9 +303,9 @@ const Stock = () => {
                     localStorage.setItem('resize-table', 'false')
                 }
                 setResize(!resize)
-            }} size={40} className="ml-3" />
+            }} size={40} className="left-3 absolute top-42" />
 
-            <table className="w-full mt-2">
+            <table className="w-full mt-2 mb-18">
                 <thead className="w-full text-center border-b-1 border-t-1 bg-white border-gray-400 font-[medium]">
                     <tr>
                         {resize ? null : <td className="text-[14px]">Barcode</td>}

@@ -37,7 +37,10 @@ const Notify = () => {
                     {noti && noti.length > 0 ? noti.map((item: any, index: number) => {
                         return (
                             <tr>
-                                <td className="pt-0.5">{item.Message}</td>
+                                <td className="pt-0.5 flex justify-center gap-2">
+                                    <p>{item.Message.split("คงเหลือ")[0]}</p>
+                                    <p className="text-red-700">คงเหลือ {item.Message.split("คงเหลือ")[1]}</p>
+                                </td>
                             </tr>
                         )
                     }) : null}

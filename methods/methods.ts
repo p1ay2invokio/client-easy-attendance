@@ -335,4 +335,22 @@ export class StockMethod {
             })
         })
     }
+
+    public getProductMultiple=(searchinput:any)=>{
+        return new Promise((resolve)=>{
+            Promise.allSettled([
+                axios.get(`${uri_maekhan}/api/product/${searchinput}`),
+                axios.get(`${uri_sanpatong}/api/product/${searchinput}`),
+                axios.get(`${uri_doilor}/api/product/${searchinput}`)
+            ]).then(([maekhan, sanpatong, doilor])=>{
+                let result = {
+                    maekhan: maekhan.status == 'fulfilled' ? maekhan.value.data.data : [],
+                    sanpatong: sanpatong.status == 'fulfilled' ? sanpatong.value.data.data : [],
+                    doilor: doilor.status == 'fulfilled' ? doilor.value.data.data : []
+                }
+
+                resolve(result)
+            })
+        })
+    }
 }
