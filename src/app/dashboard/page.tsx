@@ -34,6 +34,7 @@ const Dashboard = () => {
                 Barcode: m ? m.Barcode : s ? s.Barcode : d ? d.Barcode : "Not found",
                 Name: m ? m.Name : s ? s.Name : d ? d.Name : "Not found",
                 RetailPrice: m ? m.RetailPrice : s ? s.RetailPrice : d ? d.RetailPrice : "Not found",
+                Cost: m ? m.Cost : 0,
                 maekhan: m ? m.Qty : 0,
                 sanpatong: s ? s.Qty : 0,
                 doilor: d ? d.Qty : 0,
@@ -114,7 +115,7 @@ const Dashboard = () => {
                                     <td className="text-blue-500">{item.maekhan}</td>
                                     <td className="text-orange-500">{item.sanpatong}</td>
                                     <td className="text-fuchsia-500">{item.doilor}</td>
-                                    <td>0</td>
+                                    <td>{parseInt(item.Cost)}</td>
 
                                 </tr>
                             )
