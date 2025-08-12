@@ -45,7 +45,19 @@ const Header = () => {
                     navigate.push('/')
                 }} className="font-[light] text-gray-500 text-[15px] mt-[-5px]">โปรแกรมตอกบัตร</p>
             </div>
-            <div className=" flex flex-col justify-end items-end">
+            <div onClick={() => {
+                Swal.fire({
+                    title: 'ออกจากระบบ?',
+                    cancelButtonText: "ยกเลิก",
+                    showCancelButton: true
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        localStorage.removeItem("name")
+                        localStorage.removeItem("id")
+                        navigate.push("/login")
+                    }
+                })
+            }} className=" flex flex-col justify-end items-end">
                 <p className="font-[medium] text-[18px]">{name}</p>
                 <p className="font-[light] text-[15px]">{user && user.userData ? user.userData.department : null}</p>
             </div>
