@@ -192,7 +192,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            axios.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : uri_maekhan}/api/product/${barcode}`).then((res) => {
+            axios.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/product/${barcode}`).then((res) => {
                 resolve(res.data)
             })
         })
