@@ -9,11 +9,16 @@ import Bottom from "../../../components/Bottom"
 const Dashboard = () => {
 
 
-    let [recap, setRecap] = useState<any>([])
+    let [recap, setRecap] = useState<[] | any>([])
 
     let [search, setSearch] = useState<string>("")
 
     let [total, setTotal] = useState<object | any>()
+
+    let [refresh, setRefresh] = useState<number>(0)
+
+
+    let [current, setCurrent] = useState(0)
 
     let initial = async (search_input: string) => {
         let stock: any = await new StockMethod().getProductMultiple(search_input)
@@ -99,9 +104,48 @@ const Dashboard = () => {
                         <tr className="text-center font-[medium]">
                             <td className="w-60">ชื่อ</td>
                             <td className="w-15">ขาย</td>
-                            <td className="w-15">มข</td>
-                            <td className="w-15">สปต</td>
-                            <td className="w-15">ดล</td>
+                            <td onClick={() => {
+
+
+                                if (current == 0) {
+                                    let updated = recap.sort((a: any, b: any) => a.maekhan - b.maekhan)
+                                    setRecap(updated)
+                                    setCurrent(current + 1)
+                                } else if (current == 1) {
+                                    let updated = recap.sort((a: any, b: any) => b.maekhan - a.maekhan)
+                                    setRecap(updated)
+                                    setCurrent(current - 1)
+                                }
+
+                                setRefresh(refresh + 1)
+
+                            }} className="w-15">มข</td>
+                            <td onClick={() => {
+                                if (current == 0) {
+                                    let updated = recap.sort((a: any, b: any) => a.sanpatong - b.sanpatong)
+                                    setRecap(updated)
+                                    setCurrent(current + 1)
+                                } else if (current == 1) {
+                                    let updated = recap.sort((a: any, b: any) => b.sanpatong - a.sanpatong)
+                                    setRecap(updated)
+                                    setCurrent(current - 1)
+                                }
+
+                                setRefresh(refresh + 1)
+                            }} className="w-15">สปต</td>
+                            <td onClick={() => {
+                                if (current == 0) {
+                                    let updated = recap.sort((a: any, b: any) => a.doilor - b.doilor)
+                                    setRecap(updated)
+                                    setCurrent(current + 1)
+                                } else if (current == 1) {
+                                    let updated = recap.sort((a: any, b: any) => b.doilor - a.doilor)
+                                    setRecap(updated)
+                                    setCurrent(current - 1)
+                                }
+
+                                setRefresh(refresh + 1)
+                            }} className="w-15">ดล</td>
                             <td className="w-15">ทุน</td>
                         </tr>
                     </thead>
@@ -123,8 +167,8 @@ const Dashboard = () => {
                     </tbody>
                 </table>
             </div>
-            
-            <Bottom/>
+
+            <Bottom />
         </div>
     )
 }
