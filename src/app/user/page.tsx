@@ -71,7 +71,7 @@ const User = () => {
 
                     <div className="flex justify-between">
                         <p className="font-[medium] ">รายได้ทั้งหมด</p>
-                        <p className="text-green-700">{summary} ฿</p>
+                        <p className="text-green-700">{parseInt(summary).toLocaleString('TH-th')} ฿</p>
 
                     </div>
                 </div>
