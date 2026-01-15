@@ -1,4 +1,4 @@
-export const uri = `https://attendduck.playapi.shop`
+export const uri = `https://attend.whanjeabs.online`
 export const uri_maekhan = `https://apis.maekhan.shop:8443`
 export const uri_sanpatong = `https://sanpatongapis.maekhan.shop:8443`
 export const uri_doilor = `https://doilorapis.maekhan.shop:8443`
