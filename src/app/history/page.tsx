@@ -69,7 +69,7 @@ const History = () => {
                                     <td className="pt-2 pb-2">{item.work_timestamp}</td>
                                     <td>{item.in_timestamp ? dayjs.unix(item.in_timestamp).format('HH:mm:ss') : null}</td>
                                     <td>{item.out_timestamp ? dayjs.unix(item.out_timestamp).format('HH:mm:ss') : null}</td>
-                                    {item.revenue ? <td className="text-green-700 font-[medium]">{item.revenue}฿</td> : item.in_timestamp ? item.out_timestamp ? <td className="text-green-700 font-[medium]">0฿</td> : <td className="text-[#f39c12] font-[medium]">waiting</td> : <td className="text-red-500 font-[medium]">ยังไม่ได้เข้างาน</td>}
+                                    {item.revenue ? <td className="text-green-700 font-[medium]">{Number(item.revenue).toFixed(2)} ฿</td> : item.in_timestamp ? item.out_timestamp ? <td className="text-green-700 font-[medium]">0฿</td> : <td className="text-[#f39c12] font-[medium]">waiting</td> : <td className="text-red-500 font-[medium]">ยังไม่ได้เข้างาน</td>}
                                 </tr>
                             )
                         }) : <tr><td className="font-[light] h-20" colSpan={4}>ยังไม่มีการเข้างาน</td></tr>}

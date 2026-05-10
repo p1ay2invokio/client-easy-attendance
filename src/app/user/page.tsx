@@ -65,13 +65,16 @@ const User = () => {
 
                     <div className="flex justify-between">
                         <p className="font-[medium]">รายได้ปัจจุบัน</p>
-                        {userData ? <p className="text-green-700">{userData.cash} ฿</p> : null}
+                        {userData ? <p className="text-green-700">{Number(userData.cash).toFixed(2)} ฿</p> : null}
 
                     </div>
 
                     <div className="flex justify-between">
                         <p className="font-[medium] ">รายได้ทั้งหมด</p>
-                        <p className="text-green-700">{parseInt(summary).toLocaleString('TH-th')} ฿</p>
+                        <p className="text-green-700">{Number(summary).toLocaleString('TH-th',{
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2
+                        })} ฿</p>
 
                     </div>
                 </div>
