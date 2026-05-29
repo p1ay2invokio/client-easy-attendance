@@ -5,15 +5,15 @@ const nextConfig = {
     return [
       {
         source: '/maekhan/:path*',
-        destination: 'http://maekhan2020.duckdns.org:3001/:path*',
+        destination: 'http://maekhantunnel.outwittrader.com/:path*',
       },
       {
         source: '/sanpatong/:path*',
-        destination: 'http://sanpatongddns.duckdns.org:3001/:path*',
+        destination: 'https://sanpatong.outwittrader.com/:path*',
       },
       {
         source: '/doilor/:path*',
-        destination: 'http://doilorddns.duckdns.org:3001/:path*',
+        destination: 'https://doilor.outwittrader.com/:path*',
       },
     ]
   },
