@@ -117,9 +117,80 @@ export class EmployeeMethod {
             })
         })
     }
+
+    public withdraw = (amount: number) => {
+        return new Promise((resolve) => {
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.post(`${uri}/api/withdraw`, {
+                eid: Number(userId),
+                amount: amount
+            }).then((res) => {
+                resolve(res.data)
+            }).catch((err) => {
+                resolve(err.response?.data)
+            })
+        })
+    }
 }
 
 export class AdminMethod {
+    public getWithdrawals = (eid: number) => {
+        return new Promise((resolve) => {
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.get(`${uri}/api/employee/withdrawals/${eid}`).then((res) => {
+                resolve(res.data)
+            }).catch((err) => {
+                resolve(err.response?.data)
+            })
+        })
+    }
+
+    public approveWithdraw = (id: number) => {
+        return new Promise((resolve) => {
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.post(`${uri}/api/admin/withdraw/approve`, {
+                id: id
+            }).then((res) => {
+                resolve(res.data)
+            }).catch((err) => {
+                resolve(err.response?.data)
+            })
+        })
+    }
+
+    public rejectWithdraw = (id: number) => {
+        return new Promise((resolve) => {
+            let userId = localStorage.getItem("id")
+
+            if (!userId) {
+                window.location.href = "/login"
+            }
+
+            axios.post(`${uri}/api/admin/withdraw/reject`, {
+                id: id
+            }).then((res) => {
+                resolve(res.data)
+            }).catch((err) => {
+                resolve(err.response?.data)
+            })
+        })
+    }
+
     public getEmployees = () => {
         return new Promise((resolve) => {
 

@@ -19,6 +19,8 @@ const SalaryCal = (in_timestamp: number, out_timestamp: number, rate: number) =>
 const History = () => {
 
     const [histories, setHistories] = useState<any>([])
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const itemsPerPage = 20
 
     const initial = async () => {
         let res = await new AttendanceMethod().history()
@@ -31,11 +33,14 @@ const History = () => {
         initial()
     }, [])
 
+    const totalPages = Math.ceil(histories.length / itemsPerPage)
+    const currentData = histories.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
     return (
         <div>
             <Header />
 
-            <div className="h-[calc(100vh-170px)] p-4 overflow-scroll">
+            <div className="h-[calc(100vh-230px)] p-4 overflow-scroll">
                 <table className="w-full text-center">
                     <thead>
                         <tr className="font-[medium] border-b-1 border-gray-500 text-[16px]">
@@ -46,7 +51,7 @@ const History = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {histories && histories.length > 0 ? histories.map((item: any, index: number) => {
+                        {currentData && currentData.length > 0 ? currentData.map((item: any, index: number) => {
 
                             let start_time = item.in_timestamp
                             let end_time = item.out_timestamp
@@ -75,6 +80,37 @@ const History = () => {
                         }) : <tr><td className="font-[light] h-20" colSpan={4}>ยังไม่มีการเข้างาน</td></tr>}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="w-full h-[60px] fixed bottom-[70px] bg-white border-t border-gray-200 flex justify-between items-center px-6 shadow-sm">
+                <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1 || totalPages === 0}
+                    className={`px-4 py-1.5 rounded-lg text-[14px] font-[medium] transition-all duration-200 cursor-pointer ${
+                        currentPage === 1 || totalPages === 0
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
+                            : "bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 active:scale-95"
+                    }`}
+                >
+                    ก่อนหน้า
+                </button>
+
+                <div className="text-[14px] font-[regular] text-gray-500">
+                    หน้า <span className="font-[medium] text-gray-700">{totalPages === 0 ? 0 : currentPage}</span> จาก <span className="font-[medium] text-gray-700">{totalPages}</span> ({histories.length} รายการ)
+                </div>
+
+                <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    className={`px-4 py-1.5 rounded-lg text-[14px] font-[medium] transition-all duration-200 cursor-pointer ${
+                        currentPage === totalPages || totalPages === 0
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
+                            : "bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 active:scale-95"
+                    }`}
+                >
+                    ถัดไป
+                </button>
             </div>
 
             <Bottom />
