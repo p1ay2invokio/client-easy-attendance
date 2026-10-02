@@ -1,4 +1,4 @@
-export const uri = `https://attend.whanjeabs.online`
+export const uri = `https://home.outwittrader.com`
 export const uri_maekhan = `/maekhan`
 export const uri_sanpatong = `/sanpatong`
 export const uri_doilor = `/doilor`
