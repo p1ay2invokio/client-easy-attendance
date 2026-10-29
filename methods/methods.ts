@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios"
-import { uri, uri_doilor, uri_maekhan, uri_sanpatong } from "./config"
+import { uri, uri_doilor, uri_maekhan, uri_sanpatong, uri_sapung } from "./config"
 import https from 'https'
 
 const client = axios.create({
@@ -269,7 +269,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/product/${barcode}`).then((res) => {
+            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/product/${barcode}`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -286,7 +286,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.post(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/stock/check`, {
+            client.post(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/stock/check`, {
                 barcode: barcode,
                 product_name: product_name,
                 name: name,
@@ -311,7 +311,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/stock`).then((res) => {
+            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/stock`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -327,7 +327,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/stock/update`, {
+            client.get(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/stock/update`, {
                 responseType: "blob"
             }).then((res) => {
                 console.log(res.data)
@@ -347,7 +347,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/stock`).then((res) => {
+            client.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/stock`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -363,7 +363,7 @@ export class StockMethod {
                 window.location.href = "/login"
             }
 
-            client.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : uri_maekhan}/api/stock/${sid}`).then((res) => {
+            client.delete(`${select == 0 ? uri_maekhan : select == 1 ? uri_sanpatong : select == 2 ? uri_doilor : select == 3 ? uri_sapung : uri_maekhan}/api/stock/${sid}`).then((res) => {
                 resolve(res.data)
             })
         })
@@ -376,7 +376,7 @@ export class StockMethod {
             console.log("Store : ", store)
 
             return new Promise((resolve) => {
-                client.get(`${store == 'maekhan' ? uri_maekhan : store == 'sanpatong' ? uri_sanpatong : store == 'doilor' ? uri_doilor : uri_maekhan}/api/notify`).then((res) => {
+                client.get(`${store == 'maekhan' ? uri_maekhan : store == 'sanpatong' ? uri_sanpatong : store == 'doilor' ? uri_doilor : store == 'sapung' ? uri_sapung : uri_maekhan}/api/notify`).then((res) => {
                     resolve(res.data)
                 })
             })
@@ -413,17 +413,29 @@ export class StockMethod {
         })
     }
 
+    public CountNotifySapung = () => {
+        return new Promise((resolve) => {
+            client.get(`${uri_sapung}/api/count/notify`).then((res) => {
+                resolve(res.data)
+            }).catch((err) => {
+                resolve("Sapung Count Error")
+            })
+        })
+    }
+
     public getProductMultiple = (searchinput: any) => {
         return new Promise((resolve) => {
             Promise.allSettled([
                 client.get(`${uri_maekhan}/api/product/${searchinput}`),
                 client.get(`${uri_sanpatong}/api/product/${searchinput}`),
-                client.get(`${uri_doilor}/api/product/${searchinput}`)
-            ]).then(([maekhan, sanpatong, doilor]) => {
+                client.get(`${uri_doilor}/api/product/${searchinput}`),
+                client.get(`${uri_sapung}/api/product/${searchinput}`)
+            ]).then(([maekhan, sanpatong, doilor, sapung]) => {
                 let result = {
                     maekhan: maekhan.status == 'fulfilled' ? maekhan.value.data.data : [],
                     sanpatong: sanpatong.status == 'fulfilled' ? sanpatong.value.data.data : [],
-                    doilor: doilor.status == 'fulfilled' ? doilor.value.data.data : []
+                    doilor: doilor.status == 'fulfilled' ? doilor.value.data.data : [],
+                    sapung: sapung && sapung.status == 'fulfilled' ? sapung.value.data.data : []
                 }
 
                 resolve(result)

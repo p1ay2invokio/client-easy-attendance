@@ -275,7 +275,7 @@ const Stock = () => {
             </div>
 
 
-            <div className="w-full flex justify-center items-center gap-2 mt-2">
+            <div className="w-full flex justify-center items-center gap-2 mt-2 flex-wrap">
                 <button onClick={() => {
                     setSelect(0)
                     localStorage.setItem('select', '0')
@@ -291,6 +291,11 @@ const Stock = () => {
                     localStorage.setItem('select', '2')
                     setRefresh(refresh + 1)
                 }} className={`w-20 h-8 ${select == 2 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>ดอยหล่อ</button>
+                <button onClick={() => {
+                    setSelect(3)
+                    localStorage.setItem('select', '3')
+                    setRefresh(refresh + 1)
+                }} className={`w-20 h-8 ${select == 3 ? 'bg-blue-400 text-white' : 'bg-blue-400/20'} cursor-pointer border-1 border-blue-400 text-blue-400 rounded-lg font-[medium]`}>สะปุ๋ง</button>
             </div>
 
 

@@ -15,6 +15,10 @@ const nextConfig = {
         source: '/doilor/:path*',
         destination: 'https://doilor.outwittrader.com/:path*',
       },
+      {
+        source: '/sapung/:path*',
+        destination: 'https://sapung.outwittrader.com/:path*',
+      },
     ]
   },
 }
