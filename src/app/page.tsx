@@ -37,7 +37,7 @@ function getElapsedTime(startUnix: any) {
 const SalaryCal = (in_timestamp: number, rate: number) => {
   let salary = Math.floor((dayjs().diff(dayjs.unix(in_timestamp), 'minutes') / 30)) * (rate / 12) / 2
 
-  return salary
+  return Number(salary.toFixed(2))
 }
 
 dayjs.extend(relativeTime)
@@ -67,6 +67,7 @@ const HomePage = () => {
   let [san, setSan] = useState<any>(null)
   let [mae, setMae] = useState<any>(null)
   let [doi, setDoi] = useState<any>(null)
+  let [sapung, setSapung] = useState<any>(null)
 
   const initial = async () => {
     let res: any = await new AttendanceMethod().todayData()
@@ -130,13 +131,14 @@ const HomePage = () => {
     let maekhan = await new StockMethod().CountNotifyMaekhan()
     let sanpatong = await new StockMethod().CountNotifySanpatong()
     let doilor = await new StockMethod().CountNotifyDoilor()
-
+    let sapungCount = await new StockMethod().CountNotifySapung()
 
     console.log(sanpatong)
 
     setMae(maekhan)
     setSan(sanpatong)
     setDoi(doilor)
+    setSapung(sapungCount)
 
   }
 
@@ -179,12 +181,12 @@ const HomePage = () => {
           <img src={'/img/5.jpg'} className="w-full object-cotain h-full rounded-lg"></img>
         </div>
 
-        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-3  gap-2 mb-2 rounded-lg shadow p-1">
+        <div className="border-1 border-gray-300 w-[360px] grid grid-cols-4  gap-2 mb-2 rounded-lg shadow p-1">
           <div className="relative">
             <img onClick={() => {
               navigate.push("/notify/maekhan")
-            }} src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+            }} src={'/img/1.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300 cursor-pointer"></img>
+            <div className="text-[13px] font-[bold] w-8 h-8 flex justify-center items-center z-[100] -top-2 -right-2 absolute bg-orange-300 shadow text-white rounded-full p-1">
               <p>{mae && mae.count ? mae.count : 0}</p>
             </div>
 
@@ -192,17 +194,26 @@ const HomePage = () => {
           <div className="relative">
             <img onClick={() => {
               navigate.push("/notify/sanpatong")
-            }} src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+            }} src={'/img/2.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300 cursor-pointer"></img>
+            <div className="text-[13px] font-[bold] w-8 h-8 flex justify-center items-center z-[100] -top-2 -right-2 absolute bg-orange-300 shadow text-white rounded-full p-1">
               <p>{san && san.count ? san.count : 0}</p>
             </div>
           </div>
           <div className="relative">
             <img onClick={() => {
               navigate.push("/notify/doilor")
-            }} src={'/img/doilor.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300"></img>
-            <div className="text-[15px] font-[bold] w-10 h-10 flex justify-center items-center z-[100] -top-2 -right-5 absolute bg-orange-300 shadow text-white rounded-full p-1">
+            }} src={'/img/doilor.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300 cursor-pointer"></img>
+            <div className="text-[13px] font-[bold] w-8 h-8 flex justify-center items-center z-[100] -top-2 -right-2 absolute bg-orange-300 shadow text-white rounded-full p-1">
               <p>{doi && doi.count ? doi.count : 0}</p>
+            </div>
+
+          </div>
+          <div className="relative">
+            <img onClick={() => {
+              navigate.push("/notify/sapung")
+            }} src={'/img/sapung.jpg'} className="w-full h-full rounded-lg border-2 border-amber-300 cursor-pointer"></img>
+            <div className="text-[13px] font-[bold] w-8 h-8 flex justify-center items-center z-[100] -top-2 -right-2 absolute bg-orange-300 shadow text-white rounded-full p-1">
+              <p>{sapung && sapung.count ? sapung.count : 0}</p>
             </div>
 
           </div>
@@ -238,7 +249,7 @@ const HomePage = () => {
 
           <div className="flex flex-col gap-0 items-center w-full">
             <p className="font-[bold] text-[20px] text-gray-700">{date}</p>
-            {attendance && attendance.in_timestamp && !attendance.out_timestamp ? <p className="font-[regular] text-[16px] text-green-700">ยอดสุทธิ {SalaryCal(attendance.in_timestamp, attendance.employee.rate)} ฿</p> : null}
+            {attendance && attendance.in_timestamp && !attendance.out_timestamp ? <p className="font-[regular] text-[16px] text-green-700">ยอดสุทธิ {Number(SalaryCal(attendance.in_timestamp, attendance.employee.rate)).toFixed(2)} ฿</p> : null}
           </div>
 
           {attendance && attendance.in_timestamp && !attendance.out_timestamp ? !loadTime ? <div className="fixed bottom-25 p-2 rounded-lg bg-white border-1 border-gray-300 shadow">

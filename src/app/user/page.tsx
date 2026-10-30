@@ -125,7 +125,7 @@ const User = () => {
                     <div className="flex justify-between items-center">
                         <p className="font-[medium]  text-[15px]">รายได้ทั้งหมด</p>
                         <p className="text-green-700 font-[medium] text-[18px]">{Number(summary).toLocaleString('TH-th',{
-                            minimumFractionDigits: 0,
+                            minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         })} ฿</p>
 
@@ -214,7 +214,7 @@ const User = () => {
                     <div className="bg-white w-[350px] rounded-xl p-6 flex flex-col gap-4 border border-gray-300 shadow-lg">
                         <h3 className="font-[bold] text-[20px] text-gray-800">เบิกเงินสดล่วงหน้า</h3>
                         <p className="font-[regular] text-[15px] text-gray-500 -mt-2">
-                            รายได้ปัจจุบันคงเหลือ: <span className="font-[medium] text-green-700">{userData ? Number(userData.cash).toFixed(2) : 0} ฿</span>
+                            รายได้ปัจจุบันคงเหลือ: <span className="font-[medium] text-green-700">{userData ? Number(userData.cash).toFixed(2) : "0.00"} ฿</span>
                         </p>
                         
                         <div className="flex flex-col gap-1.5">

@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/maekhan/:path*',
-        destination: 'http://maekhantunnel.outwittrader.com/:path*',
+        destination: 'https://maekhantunnel.outwittrader.com/:path*',
       },
       {
         source: '/sanpatong/:path*',

@@ -106,7 +106,7 @@ const Admin = () => {
                 }
             }} className="w-full h-[100vh] fixed top-0 left-0 bg-black/30 flex justify-center items-center z-5">
                 <div className="bg-gray-50 w-90 h-50 overflow-scroll rounded-lg p-10 flex flex-col gap-2 border-1 border-gray-300 shadow">
-                    <input placeholder={attend.revenue} className="w-full bg-gray-50 text-[24px] font-[medium] outline-none border-1 rounded-lg text-center h-11" onChange={(e) => {
+                    <input placeholder={attend && attend.revenue !== undefined ? Number(attend.revenue).toFixed(2) : "0.00"} className="w-full bg-gray-50 text-[24px] font-[medium] outline-none border-1 rounded-lg text-center h-11" onChange={(e) => {
                         setRevenueNew(Number(e.target.value))
                     }}></input>
                     <button className="w-full h-10 mt-2 bg-blue-600/20 font-[medium] border-1 border-blue-600 text-blue-600 rounded-lg" onClick={async () => {
@@ -140,7 +140,7 @@ const Admin = () => {
                                 </span> : null}
                                 <div>
                                     <p className="text-[18px] font-[bold] mb-1">{item.work_timestamp}</p>
-                                    <p className="text-[16px] font-[light]">ค่าแรง : {item.revenue}฿</p>
+                                    <p className="text-[16px] font-[light]">ค่าแรง : {Number(item.revenue).toFixed(2)} ฿</p>
                                     <table className="w-full mt-3 mb-3">
                                         <thead className="text-center font-[bold]">
                                             <tr className="h-9">
@@ -213,7 +213,7 @@ const Admin = () => {
                             <div>
                                 <p className="font-[medium]">{item.name}</p>
                                 <p className="font-[regular] text-[14px] text-gray-500">{item.department}</p>
-                                <p className="font-[regular] text-[14px] text-gray-500">รายได้ {item.cash} บาท</p>
+                                <p className="font-[regular] text-[14px] text-gray-500">รายได้ {Number(item.cash).toFixed(2)} บาท</p>
                             </div>
                             <div className="flex gap-2">
                                 <button
@@ -231,7 +231,7 @@ const Admin = () => {
                                     if (e.target == e.currentTarget) {
                                         Swal.fire({
                                             title: `ต้องการจ่ายเงินเดือนให้พนักงาน ${item.name}`,
-                                            text: `${item.cash}฿`,
+                                            text: `${Number(item.cash).toFixed(2)} ฿`,
                                             confirmButtonText: 'ใช่',
                                             cancelButtonText: 'ไม่',
                                             showCancelButton: true,
@@ -244,7 +244,7 @@ const Admin = () => {
 
                                                 Swal.fire({
                                                     title: `จ่ายเงินเดือนให้ ${item.name} สำเร็จ!`,
-                                                    text: `${item.cash}฿`,
+                                                    text: `${Number(item.cash).toFixed(2)} ฿`,
                                                     icon: 'success'
                                                 })
 

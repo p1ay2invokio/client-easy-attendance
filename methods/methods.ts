@@ -376,8 +376,10 @@ export class StockMethod {
             console.log("Store : ", store)
 
             return new Promise((resolve) => {
-                client.get(`${store == 'maekhan' ? uri_maekhan : store == 'sanpatong' ? uri_sanpatong : store == 'doilor' ? uri_doilor : store == 'sapung' ? uri_sapung : uri_maekhan}/api/notify`).then((res) => {
+                client.get(`${store == 'maekhan' ? uri_maekhan : store == 'sanpatong' ? uri_sanpatong : store == 'doilor' ? uri_doilor : store == 'sapung' ? uri_sapung : uri_maekhan}/api/notify`, { timeout: 20000 }).then((res) => {
                     resolve(res.data)
+                }).catch((err) => {
+                    resolve({ status: 500, data: [] })
                 })
             })
         }
@@ -385,8 +387,14 @@ export class StockMethod {
 
     public CountNotifyMaekhan = () => {
         return new Promise((resolve) => {
-            client.get(`${uri_maekhan}/api/count/notify`).then((res) => {
-                resolve(res.data)
+            client.get(`${uri_maekhan}/api/notify`, { timeout: 20000 }).then((res: any) => {
+                if (res.data?.count !== undefined) {
+                    resolve(res.data)
+                } else if (Array.isArray(res.data?.data)) {
+                    resolve({ status: 200, count: res.data.data.length })
+                } else {
+                    resolve(res.data)
+                }
             }).catch((err) => {
                 resolve("Maekhan Count Error")
             })

@@ -74,17 +74,17 @@ const Dashboard = () => {
             <div className="w-full flex justify-center items-center mt-3 gap-3">
                 <div className="w-25 h-15 flex flex-col justify-center items-center bg-blue-300/30 border-1 border-blue-400/40 rounded-lg">
                     <p>แม่ขาน</p>
-                    <p className="text-green-700 font-semibold">{total ? total.maekhanTotal.toLocaleString("TH-th") : 0}</p>
+                    <p className="text-green-700 font-semibold">{total ? Number(total.maekhanTotal).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}</p>
                 </div>
 
                 <div className="p-4 w-25 h-15 flex flex-col justify-center items-center bg-blue-300/30 border-1 border-blue-400/40 rounded-lg">
                     <p>สันป่าตอง</p>
-                    <p className="text-green-700 font-semibold">{total ? total.sanpatongTotal.toLocaleString("TH-th") : 0}</p>
+                    <p className="text-green-700 font-semibold">{total ? Number(total.sanpatongTotal).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}</p>
                 </div>
 
                 <div className="p-4 w-25 h-15 flex flex-col justify-center items-center bg-blue-300/30 border-1 border-blue-400/40 rounded-lg">
                     <p>ดอยหล่อ</p>
-                    <p className="text-green-700 font-semibold">{total ? total.doilorTotal.toLocaleString("TH-th") : 0}</p>
+                    <p className="text-green-700 font-semibold">{total ? Number(total.doilorTotal).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}</p>
                 </div>
 
             </div>
